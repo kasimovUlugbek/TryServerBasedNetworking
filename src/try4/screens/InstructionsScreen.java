@@ -20,12 +20,10 @@ public class InstructionsScreen extends Screen {
 
 		surface.background(255, 255, 255);
 
-		surface.push();
 		surface.fill(0);
 		String str = "uh, yeah, play, one hosts, then the others connect to the ip";
 		float w = surface.textWidth(str);
 		surface.text(str, (surface.width - w) / 2, surface.height / 2);
-		surface.pop();
 
 	}
 

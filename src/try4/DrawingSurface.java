@@ -79,6 +79,15 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		pop();
 
 	}
+	
+	public void keyPressed() {
+		activeScreen.keyPressed();
+	}
+	
+	@Override
+	public void keyReleased() {
+		activeScreen.keyReleased();
+	}
 
 	public void mousePressed() {
 		activeScreen.mousePressed();
