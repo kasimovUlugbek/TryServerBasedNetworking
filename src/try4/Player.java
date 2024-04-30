@@ -70,7 +70,7 @@ public class Player {
 	
 	public void draw(PApplet surface) {
 		if(classType == 0)
-			surface.image(null, (float)x, (float)y);
+			surface.image(DrawingSurface.healerClass_img, (float)x, (float)y);
 		surface.fill(0);
 		surface.textSize(14);
 		surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);

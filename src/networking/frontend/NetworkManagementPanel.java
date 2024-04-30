@@ -268,7 +268,6 @@ public class NetworkManagementPanel extends JPanel
 					ss.disconnectFromAllClients();
 					ss.shutdownServer();
 					ss = null;
-
 				}
 			} else if (source == serverButton) {
 				ss = new SchoolServer(programID, myIP);

@@ -47,6 +47,8 @@ public class MenuScreen extends Screen {
 
 		if (playButton.contains(p)) {
 			surface.switchScreen(ScreenSwitcher.GAME_SCREEN);
+			surface.StartnetowkringThing();
+			surface.switchScreen(ScreenSwitcher.GAME_SCREEN);
 			return;
 		}
 

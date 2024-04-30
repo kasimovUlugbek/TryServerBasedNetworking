@@ -38,10 +38,10 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 		GameScreen gameScreen = new GameScreen(this);
 		screens.add(gameScreen);
-		
+
 		InstructionsScreen instructionsScreen = new InstructionsScreen(this);
 		screens.add(instructionsScreen);
-		
+
 		switchScreen(0);
 	}
 
@@ -59,10 +59,11 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		healerClass_img = loadImage("img/healer.png");
 
 		String username = JOptionPane.showInputDialog("Give yourself a username:");
-
+		
+		((GameScreen)screens.get(ScreenSwitcher.GAME_SCREEN)).setUsername(username);
+		
 		for (Screen s : screens)
 			s.setup();
-
 	}
 
 	public void draw() {
@@ -79,11 +80,11 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		pop();
 
 	}
-	
+
 	public void keyPressed() {
 		activeScreen.keyPressed();
 	}
-	
+
 	@Override
 	public void keyReleased() {
 		activeScreen.keyReleased();
@@ -117,9 +118,10 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	public void switchScreen(int i) {
 		activeScreen = screens.get(i);
 	}
-	
+
 	public void StartnetowkringThing() {
-//		nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(1));
+		if (nmp == null)
+			nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN));
 	}
 
 }
