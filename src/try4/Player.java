@@ -12,7 +12,7 @@ public class Player {
 	private String username;
 	private double x, y;
 	
-	private PShape shape;
+	private int classType;
 	
 	private boolean dataUpdated;  // Allows us to limit database writes by only sending data when something has actually been modified
 	private PlayerData data;
@@ -70,7 +70,9 @@ public class Player {
 	
 	
 	public void draw(PApplet surface) {
-		surface.shape(shape, (float)x, (float)y);
+		if(classType == 0)
+			surface.image(null, (float)x, (float)y);
+//		surface.shape(shape, (float)x, (float)y);
 		surface.fill(0);
 		surface.textSize(14);
 		surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);

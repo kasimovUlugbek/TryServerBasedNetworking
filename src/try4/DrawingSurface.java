@@ -10,6 +10,7 @@ import networking.frontend.NetworkDataObject;
 import networking.frontend.NetworkListener;
 import networking.frontend.NetworkMessenger;
 import processing.core.PApplet;
+import try4.screens.Screen;
 
 public class DrawingSurface extends PApplet implements NetworkListener {
 
@@ -25,6 +26,10 @@ public class DrawingSurface extends PApplet implements NetworkListener {
 
 	private static final String messageTypeInit = "CREATE_PLAYER";
 	private static final String messageTypePlayerUpdate = "PLAYER_UPDATE";
+	
+
+	private Screen activeScreen;
+	private ArrayList<Screen> screens;
 
 	public DrawingSurface() {
 
