@@ -18,7 +18,7 @@ public class Player {
 	private boolean dataUpdated;  // Allows us to limit database writes by only sending data when something has actually been modified
 	private PlayerData data;
 	
-	public Player(String uniqueID, String username, double x, double y, PApplet surface) {
+	public Player(String uniqueID, String username, double x, double y) {
 		this.uniqueID = uniqueID;
 		this.username = username;
 		this.x = x;
@@ -26,12 +26,11 @@ public class Player {
 		
 		data = new PlayerData();
 		data.username = username;
-//		data.shapeType = rand;
 
 		dataUpdated = false;
 	}
 	
-	public Player(String uniqueID, PlayerData data, PApplet surface) {
+	public Player(String uniqueID, PlayerData data) {
 		this.uniqueID = uniqueID;
 		this.data = data;
 		this.username = data.username;

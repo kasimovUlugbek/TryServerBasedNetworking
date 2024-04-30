@@ -1,43 +1,40 @@
 package try4;
 
-import java.awt.event.KeyEvent;
+import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Queue;
 
 import javax.swing.JOptionPane;
 
-import networking.frontend.NetworkDataObject;
-import networking.frontend.NetworkListener;
-import networking.frontend.NetworkMessenger;
+import networking.frontend.NetworkManagementPanel;
 import processing.core.PApplet;
 import processing.core.PImage;
+import try4.screens.ClassSelectionScreen;
+import try4.screens.GameScreen;
 import try4.screens.Screen;
+import try4.screens.ScreenSwitcher;
 
-public class DrawingSurface extends PApplet implements NetworkListener {
+public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	// Window stuff
+	public float ratioX, ratioY;
 	private static final int DRAWING_WIDTH = 800, DRAWING_HEIGHT = 600;
-	private ArrayList<Integer> keysDown;
-
-	// Drawing stuff
-	private Player me;
-	private ArrayList<Player> players;
-
-	private NetworkMessenger nm;
-
-	private static final String messageTypeInit = "CREATE_PLAYER";
-	private static final String messageTypePlayerUpdate = "PLAYER_UPDATE";
-	
 
 	private Screen activeScreen;
 	private ArrayList<Screen> screens;
-	
-	private PImage knightClass_img,healerClass_img,rangedClass_img;
+	private NetworkManagementPanel nmp;
+
+	private PImage knightClass_img, healerClass_img, rangedClass_img;
 
 	public DrawingSurface() {
-		keysDown = new ArrayList<Integer>();
-		players = new ArrayList<Player>();
+		screens = new ArrayList<Screen>();
 
+		ClassSelectionScreen gameClassSelectionScreen = new ClassSelectionScreen(this);
+		screens.add(gameClassSelectionScreen);
+
+		GameScreen gameScreen = new GameScreen(this);
+		screens.add(gameScreen);
+
+		activeScreen = screens.get(0);
 	}
 
 	public void settings() {
@@ -48,121 +45,62 @@ public class DrawingSurface extends PApplet implements NetworkListener {
 		// The Player uses the PApplet in its constructor, so we're initializing a bunch
 		// of stuff in setup() instead of the constructor
 		// so the PApplet is definitely ready to go.
-		
+
 		knightClass_img = loadImage("img/knight.png");
 		rangedClass_img = loadImage("img/ranger.png");
 		healerClass_img = loadImage("img/healer.png");
 
 		String username = JOptionPane.showInputDialog("Give yourself a username:");
 
-		me = new Player("me!", username, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2, this);
+		for (Screen s : screens)
+			s.setup();
 
 	}
 
 	public void draw() {
-		background(255);
+
+		ratioX = (float) width / activeScreen.DRAWING_WIDTH;
+		ratioY = (float) height / activeScreen.DRAWING_HEIGHT;
 
 		push();
-		scale((float) width / DRAWING_WIDTH, (float) height / DRAWING_HEIGHT);
 
-		for (int i = 0; i < players.size(); i++) {
-			players.get(i).draw(this);
-		}
-		me.draw(this);
+		scale(ratioX, ratioY);
+
+		activeScreen.draw();
 
 		pop();
 
-		if (keysDown.contains(KeyEvent.VK_UP))
-			me.move(0, -5);
-		if (keysDown.contains(KeyEvent.VK_DOWN))
-			me.move(0, 5);
-		if (keysDown.contains(KeyEvent.VK_LEFT))
-			me.move(-5, 0);
-		if (keysDown.contains(KeyEvent.VK_RIGHT))
-			me.move(5, 0);
-
-		if (nm != null && me.isDataChanged()) {
-
-			PlayerData data = me.getDataObject();
-			nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerUpdate, data);
-
-		}
-
-		processNetworkMessages();
-
 	}
 
-	public void keyPressed() {
-		if (!keysDown.contains(super.keyCode))
-			keysDown.add(super.keyCode);
-
+	public void mousePressed() {
+		activeScreen.mousePressed();
 	}
 
-	public void keyReleased() {
-		keysDown.remove(Integer.valueOf(super.keyCode));
+	public void mouseMoved() {
+		activeScreen.mouseMoved();
+	}
+
+	public void mouseDragged() {
+		activeScreen.mouseDragged();
+	}
+
+	public void mouseReleased() {
+		activeScreen.mouseReleased();
+	}
+
+	public Point assumedCoordinatesToActual(Point assumed) {
+		return new Point((int) (assumed.getX() * ratioX), (int) (assumed.getY() * ratioY));
+	}
+
+	public Point actualCoordinatesToAssumed(Point actual) {
+		return new Point((int) (actual.getX() / ratioX), (int) (actual.getY() / ratioY));
 	}
 
 	@Override
-	public void connectedToServer(NetworkMessenger nm) {
-		this.nm = nm;
-	}
-
-	@Override
-	public void networkMessageReceived(NetworkDataObject ndo) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void processNetworkMessages() {
-
-		if (nm == null)
-			return;
-
-		Queue<NetworkDataObject> queue = nm.getQueuedMessages();
-
-		while (!queue.isEmpty()) {
-			NetworkDataObject ndo = queue.poll();
-
-			String host = ndo.getSourceIP();
-
-			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
-				if (ndo.message[0].equals(messageTypePlayerUpdate)) {
-
-					for (Player p : players) {
-						if (p.idMatch(host)) {
-							p.syncWithDataObject((PlayerData) ndo.message[1]);
-							break;
-						}
-					}
-
-				} else if (ndo.message[0].equals(messageTypeInit)) {
-
-					for (Player p : players) {
-						if (p.idMatch(host))
-							return;
-					}
-
-					Player p = new Player(host, (PlayerData) ndo.message[1], this);
-					players.add(p);
-
-				}
-			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
-				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeInit, me.getDataObject());
-
-			} else if (ndo.messageType.equals(NetworkDataObject.DISCONNECT)) {
-
-				if (ndo.dataSource.equals(ndo.serverHost)) {
-					players.clear();
-				} else {
-					for (int i = players.size() - 1; i >= 0; i--)
-						if (players.get(i).idMatch(host))
-							players.remove(i);
-				}
-
-			}
-
-		}
-
+	public void switchScreen(int i) {
+		activeScreen = screens.get(i);
+		if (screens.get(i) instanceof GameScreen)
+			nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(i));
 	}
 
 }
