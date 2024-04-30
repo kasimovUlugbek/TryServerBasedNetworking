@@ -64,6 +64,8 @@ public class GameScreen extends Screen implements NetworkListener {
 			me.move(-5, 0);
 		if (keysDown.contains(KeyEvent.VK_D))
 			me.move(5, 0);
+		if (keysDown.contains(KeyEvent.VK_R))
+			me.SwitchClassType();
 
 		if (nm != null && me.isDataChanged()) {
 

@@ -3,6 +3,7 @@ package try4;
 import java.awt.Color;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.core.PShape;
 
 public class Player {
@@ -12,9 +13,9 @@ public class Player {
 	private String username;
 	private double x, y;
 	private double width = 100, height = 100;
-	private boolean rolling;
+//	private boolean rolling;
 
-	private int classType;
+	private int classType = 0;
 
 	private boolean dataUpdated; // Allows us to limit database writes by only sending data when something has
 									// actually been modified
@@ -70,9 +71,16 @@ public class Player {
 	}
 
 	public void draw(PApplet surface) {
-		if (classType == 0)
-			surface.image(DrawingSurface.healerClass_img, (float) (x - width * 0.5), (float) (y - height * 0.5),
-					(float) width, (float) height);
+		PImage tempImgChosen;
+		if (classType <= 0)
+			tempImgChosen = DrawingSurface.healerClass_img;
+		else if (classType == 1)
+			tempImgChosen = DrawingSurface.rangedClass_img;
+		else
+			tempImgChosen = DrawingSurface.knightClass_img;
+
+		surface.image(tempImgChosen, (float) (x - width * 0.5), (float) (y - height * 0.5), (float) width,
+				(float) height);
 
 //		surface.noFill();
 //		surface.rect((float) x, (float) y, (float) width, (float) height);
@@ -84,12 +92,20 @@ public class Player {
 		surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);
 		surface.text(username, (float) x, (float) (y - height * 0.5 - 5));
 	}
+	public void SwitchClassType() 
+	{
+		classType+=1;
+		if(classType>2)
+			classType = 0;
+		dataUpdated = true;
+	}
 
 	public PlayerData getDataObject() {
 		dataUpdated = false;
 
 		data.x = x;
 		data.y = y;
+		data.classType = classType;
 		return data;
 	}
 
@@ -98,6 +114,7 @@ public class Player {
 
 		this.x = data.x;
 		this.y = data.y;
+		this.classType = data.classType;
 	}
 
 }
