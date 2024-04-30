@@ -10,6 +10,7 @@ import networking.frontend.NetworkDataObject;
 import networking.frontend.NetworkListener;
 import networking.frontend.NetworkMessenger;
 import processing.core.PApplet;
+import processing.core.PImage;
 import try4.screens.Screen;
 
 public class DrawingSurface extends PApplet implements NetworkListener {
@@ -30,9 +31,10 @@ public class DrawingSurface extends PApplet implements NetworkListener {
 
 	private Screen activeScreen;
 	private ArrayList<Screen> screens;
+	
+	private PImage knightClass_img,healerClass_img,rangedClass_img;
 
 	public DrawingSurface() {
-
 		keysDown = new ArrayList<Integer>();
 		players = new ArrayList<Player>();
 
@@ -46,6 +48,10 @@ public class DrawingSurface extends PApplet implements NetworkListener {
 		// The Player uses the PApplet in its constructor, so we're initializing a bunch
 		// of stuff in setup() instead of the constructor
 		// so the PApplet is definitely ready to go.
+		
+		knightClass_img = loadImage("img/knight.png");
+		rangedClass_img = loadImage("img/ranger.png");
+		healerClass_img = loadImage("img/healer.png");
 
 		String username = JOptionPane.showInputDialog("Give yourself a username:");
 
