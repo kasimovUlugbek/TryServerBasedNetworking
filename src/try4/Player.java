@@ -23,16 +23,10 @@ public class Player {
 		this.username = username;
 		this.x = x;
 		this.y = y;
-		Color color = new Color((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255));
-		int rand = (int)(Math.random()*3);
 		
 		data = new PlayerData();
 		data.username = username;
-		data.shapeType = rand;
-		data.r = color.getRed();
-		data.g = color.getGreen();
-		data.b = color.getBlue();
-		setupShape(rand, color, surface);
+//		data.shapeType = rand;
 
 		dataUpdated = false;
 	}
@@ -41,24 +35,9 @@ public class Player {
 		this.uniqueID = uniqueID;
 		this.data = data;
 		this.username = data.username;
-		setupShape(data.shapeType, new Color(data.r, data.g, data.b), surface);
 		this.syncWithDataObject(data);
 		
 		dataUpdated = false;
-	}
-	
-	private void setupShape(int type, Color c, PApplet surface) {
-		
-		if (type == 0)
-			shape = surface.createShape(PApplet.ELLIPSE, 0,0,50,50);
-		else if (type == 1)
-			shape = surface.createShape(PApplet.TRIANGLE, -25,25, 0,-25, 25,25);
-		else if (type == 2)
-			shape = surface.createShape(PApplet.RECT, -25,-25, 50,50);
-			
-		shape.setFill(c.getRGB());
-		shape.setStroke(0);
-		shape.setStrokeWeight(5);
 	}
 	
 	public boolean idMatch(String uid) {

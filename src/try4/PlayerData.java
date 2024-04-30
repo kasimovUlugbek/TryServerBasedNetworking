@@ -18,8 +18,7 @@ public class PlayerData implements Serializable {
 	public String uniqueID;
 	public String username;
 	public double x, y;
-	public int r, g, b;
-	public int shapeType;
+	public int classType;
 	
 
 }
