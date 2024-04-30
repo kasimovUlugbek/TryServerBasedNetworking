@@ -56,13 +56,13 @@ public class GameScreen extends Screen implements NetworkListener {
 
 		surface.pop();
 
-		if (keysDown.contains(KeyEvent.VK_UP))
+		if (keysDown.contains(KeyEvent.VK_W))
 			me.move(0, -5);
-		if (keysDown.contains(KeyEvent.VK_DOWN))
+		if (keysDown.contains(KeyEvent.VK_S))
 			me.move(0, 5);
-		if (keysDown.contains(KeyEvent.VK_LEFT))
+		if (keysDown.contains(KeyEvent.VK_A))
 			me.move(-5, 0);
-		if (keysDown.contains(KeyEvent.VK_RIGHT))
+		if (keysDown.contains(KeyEvent.VK_D))
 			me.move(5, 0);
 
 		if (nm != null && me.isDataChanged()) {
