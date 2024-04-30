@@ -10,6 +10,8 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import try4.screens.ClassSelectionScreen;
 import try4.screens.GameScreen;
+import try4.screens.InstructionsScreen;
+import try4.screens.MenuScreen;
 import try4.screens.Screen;
 import try4.screens.ScreenSwitcher;
 
@@ -23,18 +25,24 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	private ArrayList<Screen> screens;
 	private NetworkManagementPanel nmp;
 
-	private PImage knightClass_img, healerClass_img, rangedClass_img;
+	public static PImage knightClass_img, healerClass_img, rangedClass_img;
 
 	public DrawingSurface() {
 		screens = new ArrayList<Screen>();
 
-		ClassSelectionScreen gameClassSelectionScreen = new ClassSelectionScreen(this);
-		screens.add(gameClassSelectionScreen);
+		MenuScreen menuScreen = new MenuScreen(this);
+		screens.add(menuScreen);
+
+//		ClassSelectionScreen classSelectionScreen = new ClassSelectionScreen(this);
+//		screens.add(classSelectionScreen);
 
 		GameScreen gameScreen = new GameScreen(this);
 		screens.add(gameScreen);
-
-		activeScreen = screens.get(0);
+		
+		InstructionsScreen instructionsScreen = new InstructionsScreen(this);
+		screens.add(instructionsScreen);
+		
+		switchScreen(0);
 	}
 
 	public void settings() {
@@ -99,8 +107,10 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	@Override
 	public void switchScreen(int i) {
 		activeScreen = screens.get(i);
-		if (screens.get(i) instanceof GameScreen)
-			nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(i));
+	}
+	
+	public void StartnetowkringThing() {
+//		nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(1));
 	}
 
 }
