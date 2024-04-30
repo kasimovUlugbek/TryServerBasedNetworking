@@ -26,6 +26,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	private NetworkManagementPanel nmp;
 
 	public static PImage knightClass_img, healerClass_img, rangedClass_img;
+	public int selectedClass = -1;
 
 	public DrawingSurface() {
 		screens = new ArrayList<Screen>();
@@ -33,8 +34,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		MenuScreen menuScreen = new MenuScreen(this);
 		screens.add(menuScreen);
 
-//		ClassSelectionScreen classSelectionScreen = new ClassSelectionScreen(this);
-//		screens.add(classSelectionScreen);
+		ClassSelectionScreen classSelectionScreen = new ClassSelectionScreen(this);
+		screens.add(classSelectionScreen);
 
 		GameScreen gameScreen = new GameScreen(this);
 		screens.add(gameScreen);
@@ -42,7 +43,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		InstructionsScreen instructionsScreen = new InstructionsScreen(this);
 		screens.add(instructionsScreen);
 
-		switchScreen(0);
+		switchScreen(MENU_SCREEN);
 	}
 
 	public void settings() {
@@ -65,6 +66,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		for (Screen s : screens)
 			s.setup();
 	}
+	
 
 	public void draw() {
 
