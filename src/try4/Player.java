@@ -21,9 +21,11 @@ public class Player {
 									// actually been modified
 	private PlayerData data;
 
-	public Player(String uniqueID, String username, double x, double y) {
+	public Player(String uniqueID, String username, int classType, double x, double y) {
 		this.uniqueID = uniqueID;
 		this.username = username;
+		this.classType = classType;
+		System.out.println(classType + " and i have: " + this.classType);
 		this.x = x;
 		this.y = y;
 
@@ -37,6 +39,7 @@ public class Player {
 		this.uniqueID = uniqueID;
 		this.data = data;
 		this.username = data.username;
+		this.classType = data.classType;
 		this.syncWithDataObject(data);
 
 		dataUpdated = false;
@@ -92,10 +95,10 @@ public class Player {
 		surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);
 		surface.text(username, (float) x, (float) (y - height * 0.5 - 5));
 	}
-	public void SwitchClassType() 
-	{
-		classType+=1;
-		if(classType>2)
+
+	public void SwitchClassType() {
+		classType += 1;
+		if (classType > 2)
 			classType = 0;
 		dataUpdated = true;
 	}

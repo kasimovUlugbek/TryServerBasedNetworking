@@ -46,9 +46,8 @@ public class MenuScreen extends Screen {
 		Point p = surface.actualCoordinatesToAssumed(new Point(surface.mouseX, surface.mouseY));
 
 		if (playButton.contains(p)) {
-			surface.switchScreen(ScreenSwitcher.GAME_SCREEN);
+			surface.switchScreen(ScreenSwitcher.CLASS_SELECTION_SCREEN);
 			surface.StartnetowkringThing();
-			surface.switchScreen(ScreenSwitcher.GAME_SCREEN);
 			return;
 		}
 

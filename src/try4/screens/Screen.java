@@ -10,7 +10,11 @@ public abstract class Screen {
 	}
 
 	public void setup() {
-
+		
+	}
+	
+	public void onSwitchedTo() {
+		
 	}
 
 	public void draw() {

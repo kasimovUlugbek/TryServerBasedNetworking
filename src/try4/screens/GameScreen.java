@@ -36,7 +36,12 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void setup() {
-		me = new Player("me!", username, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
+//		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
+	}
+	
+	@Override
+	public void onSwitchedTo() {
+		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
 	}
 
 	public void setUsername(String username) {
