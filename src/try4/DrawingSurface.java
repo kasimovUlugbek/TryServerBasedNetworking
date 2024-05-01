@@ -9,6 +9,7 @@ import networking.frontend.NetworkManagementPanel;
 import processing.core.PApplet;
 import processing.core.PImage;
 import try4.screens.ClassSelectionScreen;
+import try4.screens.CreditsScreen;
 import try4.screens.GameScreen;
 import try4.screens.InstructionsScreen;
 import try4.screens.MenuScreen;
@@ -45,6 +46,9 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 		InstructionsScreen instructionsScreen = new InstructionsScreen(this);
 		screens.add(instructionsScreen);
+		
+		CreditsScreen creditsScreen = new CreditsScreen(this);
+		screens.add(creditsScreen);
 
 		switchScreen(MENU_SCREEN);
 	}

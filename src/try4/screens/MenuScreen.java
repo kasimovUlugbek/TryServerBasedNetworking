@@ -12,16 +12,15 @@ public class MenuScreen extends Screen {
 	private DrawingSurface surface;
 	private PImage titleImage;
 
-	private Rectangle playButton;
-	private Rectangle instrButton;
+	private Rectangle playButton, instrButton, credButton;
 	
 	public MenuScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
 
-		playButton = new Rectangle(800 / 2 - 100, 600 / 2 - 50, 200, 100);
-		instrButton = new Rectangle(800 / 2 - 100, 600 / 2 + 100, 200, 100);
-		
+		playButton = new Rectangle(800 / 2 - 100, 600 / 2 - 100, 200, 75);
+		instrButton = new Rectangle(800 / 2 - 100, 600 / 2, 200, 75);
+		credButton = new Rectangle(800 / 2 - 100, 600 / 2 + 100, 200, 75);
 		
 	}
 	
@@ -53,6 +52,14 @@ public class MenuScreen extends Screen {
 		surface.text(str, instrButton.x + instrButton.width / 2 - w / 2, instrButton.y + instrButton.height / 2);
 		surface.pop();
 
+		surface.push();
+		surface.rect(credButton.x, credButton.y, credButton.width, credButton.height, 10, 10, 10, 10);
+		surface.fill(0);
+		str = "Credits";
+		w = surface.textWidth(str);
+		surface.text(str, credButton.x + credButton.width / 2 - w / 2, credButton.y + credButton.height / 2);
+		surface.pop();
+		
 	}
 
 	public void mousePressed() {
@@ -66,6 +73,11 @@ public class MenuScreen extends Screen {
 
 		if (instrButton.contains(p)) {
 			surface.switchScreen(ScreenSwitcher.INSTRUCTIONS_SCREEN);
+			return;
+		}
+		
+		if (credButton.contains(p)) {
+			surface.switchScreen(ScreenSwitcher.CREDITS_SCREEN);
 			return;
 		}
 	}
