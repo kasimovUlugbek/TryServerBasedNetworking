@@ -1,4 +1,5 @@
 package try4.screens;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -25,7 +26,7 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	private static final String messageTypeInit = "CREATE_PLAYER";
 	private static final String messageTypePlayerUpdate = "PLAYER_UPDATE";
-	
+
 	public GameScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
@@ -36,6 +37,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	@Override
 	public void setup() {
 //		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
+		zoomScale = 0.5f;
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class GameScreen extends Screen implements NetworkListener {
 		this.username = username;
 	}
 
-//	float zoomScale = 1;
+	float zoomScale = 1;
 
 	@Override
 	public void draw() {
@@ -56,10 +58,10 @@ public class GameScreen extends Screen implements NetworkListener {
 		surface.push();
 
 		// move camera
-//		zoomScale -= 0.001;
-//		System.out.println(zoomScale);
-//		surface.scale(zoomScale);
-		surface.translate((float) (-me.getX() + DRAWING_WIDTH * 0.5), (float) (-me.getY() + DRAWING_HEIGHT * 0.5));
+		surface.scale(zoomScale);
+		surface.translate((float) (-me.getX() + DRAWING_WIDTH / zoomScale * 0.5),
+				(float) (-me.getY() + DRAWING_HEIGHT / zoomScale * 0.5));
+//		surface.translate(DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
 
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);
@@ -91,6 +93,10 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void keyPressed() {
+		if (surface.key == KeyEvent.VK_Z) {//too zoooom
+			zoomScale *= 0.5;
+			System.out.println(zoomScale);
+		}
 		if (!keysDown.contains(surface.keyCode))
 			keysDown.add(surface.keyCode);
 		if (surface.key == PApplet.ESC)
