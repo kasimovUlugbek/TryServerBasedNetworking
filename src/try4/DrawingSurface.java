@@ -30,7 +30,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
 	public static PImage escSign_img;
 	public int selectedClass = -1;
-	
+
 	public MP3Player player = new MP3Player();
 
 	public DrawingSurface() {
@@ -47,7 +47,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 		InstructionsScreen instructionsScreen = new InstructionsScreen(this);
 		screens.add(instructionsScreen);
-		
+
 		CreditsScreen creditsScreen = new CreditsScreen(this);
 		screens.add(creditsScreen);
 
@@ -56,7 +56,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	public void settings() {
 		setSize(DRAWING_WIDTH, DRAWING_HEIGHT);
-		noSmooth();//stops anti-aliasing
+		noSmooth();// stops anti-aliasing
 	}
 
 	public void setup() {
@@ -70,7 +70,10 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		unchosenClass_img = loadImage("img/unchosen.png");
 		escSign_img = loadImage("img/ESCsign.png");
 
-		String username = JOptionPane.showInputDialog("Give yourself a username:");
+		String username = "";
+		do {
+			username = JOptionPane.showInputDialog("Give yourself a username:").trim();
+		} while (username.length() <= 2);
 
 		((GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN)).setUsername(username);
 

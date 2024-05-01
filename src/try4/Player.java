@@ -23,7 +23,6 @@ public class Player {
 		this.uniqueID = uniqueID;
 		this.username = username;
 		this.classType = classType;
-		System.out.println(classType + " and i have: " + this.classType);
 		this.x = x;
 		this.y = y;
 
