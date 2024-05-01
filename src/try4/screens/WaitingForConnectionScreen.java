@@ -34,24 +34,4 @@ public class WaitingForConnectionScreen extends Screen {
 		surface.pop();
 	}
 
-	public void mousePressed() {
-		Point p = surface.actualCoordinatesToAssumed(new Point(surface.mouseX, surface.mouseY));
-
-		if (selectButton.contains(p) && surface.selectedClass != -1) {
-			surface.switchScreen(ScreenSwitcher.GAME_SCREEN);
-			return;
-		}
-
-		if (healerButton.contains(p)) {
-			surface.selectedClass = 0;
-			return;
-		} else if (rangerButton.contains(p)) {
-			surface.selectedClass = 1;
-			return;
-		} else if (knightButton.contains(p)) {
-			surface.selectedClass = 2;
-			return;
-		}
-	}
-
 }
