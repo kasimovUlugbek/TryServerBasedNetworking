@@ -5,7 +5,6 @@ import processing.core.PImage;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import libraryStuff.MP3Player;
 import try4.DrawingSurface;
 
 public class MenuScreen extends Screen {

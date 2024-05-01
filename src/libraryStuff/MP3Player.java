@@ -1,6 +1,5 @@
 package libraryStuff;
 import javazoom.jl.player.Player;
-import java.io.FileInputStream;
 
 public class MP3Player {
 

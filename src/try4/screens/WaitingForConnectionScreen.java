@@ -1,11 +1,7 @@
 package try4.screens;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.TextArea;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 import try4.DrawingSurface;
 
 public class WaitingForConnectionScreen extends Screen {
