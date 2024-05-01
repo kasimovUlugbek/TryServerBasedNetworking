@@ -13,7 +13,7 @@ public class MenuScreen extends Screen {
 	private PImage titleImage;
 
 	private Rectangle playButton, instrButton, credButton;
-	
+
 	public MenuScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
@@ -21,20 +21,20 @@ public class MenuScreen extends Screen {
 		playButton = new Rectangle(800 / 2 - 100, 600 / 2 - 100, 200, 75);
 		instrButton = new Rectangle(800 / 2 - 100, 600 / 2 - 10, 200, 75);
 		credButton = new Rectangle(800 / 2 - 100, 600 / 2 + 80, 200, 75);
-		
+
 	}
-	
+
 	public void setup() {
 		titleImage = surface.loadImage("resources\\c581177a2a4988860651d8161539b322.png");
-		//surface.player.play("resources\\newmutation.mp3");
+		// surface.player.play("resources\\newmutation.mp3");
 	}
 
 	public void draw() {
 
 		surface.background(255, 255, 255);
 
-		surface.image(titleImage, DRAWING_WIDTH/8, DRAWING_HEIGHT/8, DRAWING_WIDTH*3/4, DRAWING_HEIGHT/8);
-		
+		surface.image(titleImage, DRAWING_WIDTH / 8, DRAWING_HEIGHT / 8, DRAWING_WIDTH * 3 / 4, DRAWING_HEIGHT / 8);
+
 		surface.push();
 		surface.rect(playButton.x, playButton.y, playButton.width, playButton.height, 10, 10, 10, 10);
 		surface.fill(0);
@@ -58,7 +58,7 @@ public class MenuScreen extends Screen {
 		w = surface.textWidth(str);
 		surface.text(str, credButton.x + credButton.width / 2 - w / 2, credButton.y + credButton.height / 2);
 		surface.pop();
-		
+
 	}
 
 	public void mousePressed() {
@@ -74,11 +74,11 @@ public class MenuScreen extends Screen {
 			surface.switchScreen(ScreenSwitcher.INSTRUCTIONS_SCREEN);
 			return;
 		}
-		
+
 		if (credButton.contains(p)) {
 			surface.switchScreen(ScreenSwitcher.CREDITS_SCREEN);
 			surface.player.stop();
-			//surface.player.play("resources\\HuntingDream.mp3");
+			// surface.player.play("resources\\HuntingDream.mp3");
 			return;
 		}
 	}
