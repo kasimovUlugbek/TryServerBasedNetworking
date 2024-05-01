@@ -71,28 +71,25 @@ public class GameScreen extends Screen implements NetworkListener {
 		float screenbottomY = (float) (me.getY() + actualHeight * 0.5);
 
 		for (int i = 0; i < players.size(); i++) {
-			players.get(i).draw(surface);
+			players.get(i).draw(surface);//draw other players
 
-			surface.push();
+			surface.push();//draw arrow pointing at player if they are off screen
 
 			if (players.get(i).getX() < screenleftX || players.get(i).getX() > screenrightX
 					|| players.get(i).getY() < screentopY || players.get(i).getY() > screenbottomY) {
-				// if player is offscreen
+				
+				
 				float clampedX = (float) Math.max(screenleftX+50, Math.min(screenrightX-50, players.get(i).getX()));
 				float clampedY = (float) Math.max(screentopY+50, Math.min(screenbottomY-50, players.get(i).getY()));
+				
+				double angle = Math.atan2(players.get(i).getY() - clampedY, players.get(i).getX() - clampedX)+PApplet.radians(90);
 
-//				surface.fill(Color.red.getRGB());
-//				surface.circle(clampedX, clampedY, 50);
-//				surface.fill(255,255,255,150);
-				double angle = Math.atan2(players.get(i).getY() - clampedX-50, players.get(i).getX() - clampedY-50)+90;
-//				System.out.println(me.getUsername() + " " + PApplet.degrees((float)angle));
 				surface.translate(clampedX, clampedY);
 				surface.rotate((float)angle);
 				surface.image(DrawingSurface.playerArrowPointer, -50, -50, 100, 100);
 			}
 			surface.pop();
 		}
-//		surface.fill(255,255,255);
 		me.draw(surface);
 
 		surface.image(DrawingSurface.unchosenClass_img, 10, 10);
@@ -108,6 +105,7 @@ public class GameScreen extends Screen implements NetworkListener {
 			me.move(5, 0);
 		if (keysDown.contains(KeyEvent.VK_R))
 			me.SwitchClassType();
+		
 
 		if (nm != null && me.isDataChanged()) {
 
@@ -121,6 +119,7 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void keyPressed() {
+		//debugging keys
 		if (surface.key == KeyEvent.VK_Z) {// too zoooom
 			zoomScale *= 0.5;
 			System.out.println("zoomed out " + zoomScale);
