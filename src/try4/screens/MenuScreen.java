@@ -19,8 +19,8 @@ public class MenuScreen extends Screen {
 		this.surface = surface;
 
 		playButton = new Rectangle(800 / 2 - 100, 600 / 2 - 100, 200, 75);
-		instrButton = new Rectangle(800 / 2 - 100, 600 / 2, 200, 75);
-		credButton = new Rectangle(800 / 2 - 100, 600 / 2 + 100, 200, 75);
+		instrButton = new Rectangle(800 / 2 - 100, 600 / 2 - 10, 200, 75);
+		credButton = new Rectangle(800 / 2 - 100, 600 / 2 + 80, 200, 75);
 		
 	}
 	
@@ -78,7 +78,7 @@ public class MenuScreen extends Screen {
 		if (credButton.contains(p)) {
 			surface.switchScreen(ScreenSwitcher.CREDITS_SCREEN);
 			surface.player.stop();
-			//surface.player.play("resources\\);
+			//surface.player.play("resources\\HuntingDream.mp3");
 			return;
 		}
 	}
