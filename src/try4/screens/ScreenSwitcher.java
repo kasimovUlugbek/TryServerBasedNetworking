@@ -5,6 +5,7 @@ public interface ScreenSwitcher {
 	public static final int CLASS_SELECTION_SCREEN = 1;
 	public static final int GAME_SCREEN = 2;
 	public static final int INSTRUCTIONS_SCREEN = 3;
+	public static final int CREDITS_SCREEN = 4;
 
 	public void switchScreen(int i);
 }
