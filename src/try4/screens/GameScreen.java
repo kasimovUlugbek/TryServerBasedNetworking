@@ -48,6 +48,8 @@ public class GameScreen extends Screen implements NetworkListener {
 		this.username = username;
 	}
 
+//	float zoomScale = 1;
+
 	@Override
 	public void draw() {
 		surface.background(255);
@@ -55,9 +57,11 @@ public class GameScreen extends Screen implements NetworkListener {
 		surface.push();
 
 		// move camera
-//		surface.scale(2);
+//		zoomScale -= 0.001;
+//		System.out.println(zoomScale);
+//		surface.scale(zoomScale);
 		surface.translate((float) (-me.getX() + DRAWING_WIDTH * 0.5), (float) (-me.getY() + DRAWING_HEIGHT * 0.5));
-		
+
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);
 		}

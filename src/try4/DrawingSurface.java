@@ -49,7 +49,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	public void settings() {
 		setSize(DRAWING_WIDTH, DRAWING_HEIGHT);
-		noSmooth();
+		noSmooth();//stops anti-aliasing
 	}
 
 	public void setup() {
