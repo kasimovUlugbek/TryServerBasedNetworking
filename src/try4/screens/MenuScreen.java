@@ -26,8 +26,7 @@ public class MenuScreen extends Screen {
 	
 	public void setup() {
 		titleImage = surface.loadImage("resources\\c581177a2a4988860651d8161539b322.png");
-		//MP3Player.play("resources\\newmutation.mp3");
-		surface.player.play("resources\\newmutation.mp3");
+		//surface.player.play("resources\\newmutation.mp3");
 	}
 
 	public void draw() {
@@ -78,6 +77,8 @@ public class MenuScreen extends Screen {
 		
 		if (credButton.contains(p)) {
 			surface.switchScreen(ScreenSwitcher.CREDITS_SCREEN);
+			surface.player.stop();
+			//surface.player.play("resources\\);
 			return;
 		}
 	}
