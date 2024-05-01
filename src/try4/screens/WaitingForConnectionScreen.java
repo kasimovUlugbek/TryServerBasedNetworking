@@ -12,43 +12,14 @@ public class WaitingForConnectionScreen extends Screen {
 
 	private DrawingSurface surface;
 
-	private Rectangle healerButton;
-	private Rectangle rangerButton;
-	private Rectangle knightButton;
-
-	private Rectangle selectButton;
-
-	private Rectangle portraitSquare;
-	private TextArea textArea;
-
 	public WaitingForConnectionScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
 	}
 
-	int healerW, rangerW, knightW, selectW;
-
 	@Override
 	public void setup() {
-		int blockX = DRAWING_WIDTH - DRAWING_WIDTH / 5;
-		int blockMid = DRAWING_HEIGHT / 2;
-
-		surface.push();
-		surface.textSize(30);
-		healerW = (int) surface.textWidth("healer");
-		healerButton = new Rectangle(blockX - healerW, blockMid - 75, healerW * 2, 50);
-		rangerW = (int) surface.textWidth("ranger");
-		rangerButton = new Rectangle(blockX - rangerW, blockMid, rangerW * 2, 50);
-		knightW = (int) surface.textWidth("knight");
-		knightButton = new Rectangle(blockX - knightW, blockMid + 75, knightW * 2, 50);
-
-		selectW = (int) surface.textWidth("select");
-		selectButton = new Rectangle(DRAWING_WIDTH - selectW - 50, DRAWING_HEIGHT - 50, (int) (selectW * 1.5), 50);
-
-		portraitSquare = new Rectangle(50, 50, (int) (DRAWING_WIDTH / 2.5), (int) (DRAWING_WIDTH / 2.5));
-		textArea = new TextArea();
-
-		surface.pop();
+		
 	}
 
 	@Override
@@ -60,43 +31,7 @@ public class WaitingForConnectionScreen extends Screen {
 		surface.textAlign(PApplet.LEFT, PApplet.TOP);
 		surface.noStroke();
 
-		surface.fill(50, 50);
-		surface.rect(healerButton.x, healerButton.y, healerButton.width, healerButton.height, 10, 10, 10, 10);
-		surface.fill(0);
-		surface.text("Healer", healerButton.x + healerW * 0.5f, healerButton.y);
-
-		surface.fill(50, 50);
-		surface.rect(rangerButton.x, rangerButton.y, rangerButton.width, rangerButton.height, 10, 10, 10, 10);
-		surface.fill(0);
-		surface.text("Ranger", rangerButton.x + rangerW * 0.5f, rangerButton.y);
-
-		surface.fill(50, 50);
-		surface.rect(knightButton.x, knightButton.y, knightButton.width, knightButton.height, 10, 10, 10, 10);
-		surface.fill(0);
-		surface.text("Knight", knightButton.x + knightW * 0.5f, knightButton.y);
-
-		surface.fill(30, 50);
-		surface.rect(selectButton.x, selectButton.y, selectButton.width, selectButton.height, 10, 10, 10, 10);
-		surface.fill(0);
-		surface.text("select", selectButton.x + selectW * 0.5f, selectButton.y);
-
-		PImage tempClassImage = DrawingSurface.unchosenClass_img;
-
-		if (surface.selectedClass == 0) {
-			tempClassImage = DrawingSurface.healerClass_img;
-			textArea.setText("Guy who heals");// can maybe get strings from reading text files. if we'l need to
-		} else if (surface.selectedClass == 1) {
-			tempClassImage = DrawingSurface.rangedClass_img;
-			textArea.setText("Guy who exterminates");
-		} else if (surface.selectedClass == 2) {
-			tempClassImage = DrawingSurface.knightClass_img;
-			textArea.setText("Guy who protects");
-		}
-
-		surface.image(tempClassImage, portraitSquare.x, portraitSquare.y, portraitSquare.width, portraitSquare.height);
 		surface.pop();
-
-//		surface.push();
 	}
 
 	public void mousePressed() {
