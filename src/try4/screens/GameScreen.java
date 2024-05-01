@@ -38,7 +38,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	public void setup() {
 //		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
 	}
-	
+
 	@Override
 	public void onSwitchedTo() {
 		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
@@ -54,6 +54,10 @@ public class GameScreen extends Screen implements NetworkListener {
 
 		surface.push();
 
+		// move camera
+//		surface.scale(2);
+		surface.translate((float) (-me.getX() + DRAWING_WIDTH * 0.5), (float) (-me.getY() + DRAWING_HEIGHT * 0.5));
+		
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);
 		}
@@ -86,7 +90,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	public void keyPressed() {
 		if (!keysDown.contains(surface.keyCode))
 			keysDown.add(surface.keyCode);
-		if(surface.key == PApplet.ESC)
+		if (surface.key == PApplet.ESC)
 			surface.key = 0;// This prevents a processing program from closing on escape key
 	}
 
@@ -94,12 +98,11 @@ public class GameScreen extends Screen implements NetworkListener {
 	public void keyReleased() {
 		keysDown.remove(Integer.valueOf(surface.keyCode));
 	}
-	
 
 	public boolean isPressed(Integer code) {
 		return keysDown.contains(code);
 	}
-	
+
 	@Override
 	public void connectedToServer(NetworkMessenger nm) {
 		this.nm = nm;
