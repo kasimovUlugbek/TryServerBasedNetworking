@@ -2,12 +2,13 @@ package try4.screens;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.TextArea;
 
 import processing.core.PApplet;
 import processing.core.PImage;
 import try4.DrawingSurface;
 
-public class ClassSelectionScreen extends Screen {
+public class WaitingForConnectionScreen extends Screen {
 
 	private DrawingSurface surface;
 
@@ -18,8 +19,9 @@ public class ClassSelectionScreen extends Screen {
 	private Rectangle selectButton;
 
 	private Rectangle portraitSquare;
+	private TextArea textArea;
 
-	public ClassSelectionScreen(DrawingSurface surface) {
+	public WaitingForConnectionScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
 	}
@@ -44,6 +46,7 @@ public class ClassSelectionScreen extends Screen {
 		selectButton = new Rectangle(DRAWING_WIDTH - selectW - 50, DRAWING_HEIGHT - 50, (int) (selectW * 1.5), 50);
 
 		portraitSquare = new Rectangle(50, 50, (int) (DRAWING_WIDTH / 2.5), (int) (DRAWING_WIDTH / 2.5));
+		textArea = new TextArea();
 
 		surface.pop();
 	}
@@ -78,20 +81,18 @@ public class ClassSelectionScreen extends Screen {
 		surface.text("select", selectButton.x + selectW * 0.5f, selectButton.y);
 
 		PImage tempClassImage = DrawingSurface.unchosenClass_img;
-		String description = "choose a class";
+
 		if (surface.selectedClass == 0) {
 			tempClassImage = DrawingSurface.healerClass_img;
-			description = "Guy who heals";// can maybe get strings from reading text files. if we'l need to
+			textArea.setText("Guy who heals");// can maybe get strings from reading text files. if we'l need to
 		} else if (surface.selectedClass == 1) {
 			tempClassImage = DrawingSurface.rangedClass_img;
-			description = "Guy who exterminates";
+			textArea.setText("Guy who exterminates");
 		} else if (surface.selectedClass == 2) {
 			tempClassImage = DrawingSurface.knightClass_img;
-			description = "Guy who protects";
+			textArea.setText("Guy who protects");
 		}
-		surface.textSize(20);
-		surface.text(description, portraitSquare.x, portraitSquare.y + portraitSquare.height, portraitSquare.width,
-				portraitSquare.height);
+
 		surface.image(tempClassImage, portraitSquare.x, portraitSquare.y, portraitSquare.width, portraitSquare.height);
 		surface.pop();
 

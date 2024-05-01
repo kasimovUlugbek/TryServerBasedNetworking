@@ -19,6 +19,9 @@ public class InstructionsScreen extends Screen {
 		String str = "uh, yeah, play, one hosts, then the others connect to the ip";
 		float w = surface.textWidth(str);
 		surface.text(str, (surface.width - w) / 2, surface.height / 2);
+
+		surface.image(DrawingSurface.escSign_img, 0, 0, DrawingSurface.escSign_img.width * 3,
+				DrawingSurface.escSign_img.height * 3);
 	}
 
 	@Override

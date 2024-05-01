@@ -1,10 +1,8 @@
 package try4;
 
-import java.awt.Color;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PShape;
 
 public class Player {
 

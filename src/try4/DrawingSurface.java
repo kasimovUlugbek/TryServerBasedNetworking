@@ -25,7 +25,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	private ArrayList<Screen> screens;
 	private NetworkManagementPanel nmp;
 
-	public static PImage knightClass_img, healerClass_img, rangedClass_img;
+	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
+	public static PImage escSign_img;
 	public int selectedClass = -1;
 
 	public DrawingSurface() {
@@ -58,15 +59,16 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		knightClass_img = loadImage("img/knight.png");
 		rangedClass_img = loadImage("img/ranger.png");
 		healerClass_img = loadImage("img/healer.png");
+		unchosenClass_img = loadImage("img/unchosen.png");
+		escSign_img = loadImage("img/ESCsign.png");
 
 		String username = JOptionPane.showInputDialog("Give yourself a username:");
-		
-		((GameScreen)screens.get(ScreenSwitcher.GAME_SCREEN)).setUsername(username);
-		
+
+		((GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN)).setUsername(username);
+
 		for (Screen s : screens)
 			s.setup();
 	}
-	
 
 	public void draw() {
 
@@ -74,7 +76,6 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		ratioY = (float) height / activeScreen.DRAWING_HEIGHT;
 
 		push();
-
 		scale(ratioX, ratioY);
 
 		activeScreen.draw();
@@ -124,7 +125,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	public void StartnetowkringThing() {
 		if (nmp == null)
-			nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN));
+			nmp = new NetworkManagementPanel("ProcessingAction", 6,
+					(GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN));
 	}
 
 }
