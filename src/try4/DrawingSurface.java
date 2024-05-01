@@ -28,7 +28,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	private NetworkManagementPanel nmp;
 
 	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
-	public static PImage escSign_img;
+	public static PImage escSign_img, playerArrowPointer;
 	public int selectedClass = -1;
 
 	public MP3Player player = new MP3Player();
@@ -69,6 +69,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		healerClass_img = loadImage("img/healer.png");
 		unchosenClass_img = loadImage("img/unchosen.png");
 		escSign_img = loadImage("img/ESCsign.png");
+		playerArrowPointer = loadImage("img/playerArrowPointer.png");
 
 		String username = "";
 		do {

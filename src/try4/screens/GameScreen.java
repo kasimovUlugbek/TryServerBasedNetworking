@@ -1,5 +1,6 @@
 package try4.screens;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -9,6 +10,7 @@ import networking.frontend.NetworkDataObject;
 import networking.frontend.NetworkListener;
 import networking.frontend.NetworkMessenger;
 import processing.core.PApplet;
+import processing.core.PImage;
 import try4.Player;
 import try4.PlayerData;
 
@@ -57,17 +59,43 @@ public class GameScreen extends Screen implements NetworkListener {
 
 		surface.push();
 
-		// move camera
+		// move/zoom camera
+		float actualWidth = DRAWING_WIDTH / zoomScale;
+		float actualHeight = DRAWING_HEIGHT / zoomScale;
 		surface.scale(zoomScale);
-		surface.translate((float) (-me.getX() + DRAWING_WIDTH / zoomScale * 0.5),
-				(float) (-me.getY() + DRAWING_HEIGHT / zoomScale * 0.5));
-//		surface.translate(DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
+		surface.translate((float) (-me.getX() + actualWidth * 0.5), (float) (-me.getY() + actualHeight * 0.5));
+
+		float screenleftX = (float) (me.getX() - actualWidth * 0.5);
+		float screenrightX = (float) (me.getX() + actualWidth * 0.5);
+		float screentopY = (float) (me.getY() - actualHeight * 0.5);
+		float screenbottomY = (float) (me.getY() + actualHeight * 0.5);
 
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);
+
+			surface.push();
+
+			if (players.get(i).getX() < screenleftX || players.get(i).getX() > screenrightX
+					|| players.get(i).getY() < screentopY || players.get(i).getY() > screenbottomY) {
+				// if player is offscreen
+				float clampedX = (float) Math.max(screenleftX+50, Math.min(screenrightX-50, players.get(i).getX()));
+				float clampedY = (float) Math.max(screentopY+50, Math.min(screenbottomY-50, players.get(i).getY()));
+
+//				surface.fill(Color.red.getRGB());
+//				surface.circle(clampedX, clampedY, 50);
+//				surface.fill(255,255,255,150);
+				double angle = Math.atan2(players.get(i).getY() - clampedX-50, players.get(i).getX() - clampedY-50)+90;
+//				System.out.println(me.getUsername() + " " + PApplet.degrees((float)angle));
+				surface.translate(clampedX, clampedY);
+				surface.rotate((float)angle);
+				surface.image(DrawingSurface.playerArrowPointer, -50, -50, 100, 100);
+			}
+			surface.pop();
 		}
+//		surface.fill(255,255,255);
 		me.draw(surface);
 
+		surface.image(DrawingSurface.unchosenClass_img, 10, 10);
 		surface.pop();
 
 		if (keysDown.contains(KeyEvent.VK_W))
@@ -93,9 +121,13 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void keyPressed() {
-		if (surface.key == KeyEvent.VK_Z) {//too zoooom
+		if (surface.key == KeyEvent.VK_Z) {// too zoooom
 			zoomScale *= 0.5;
-			System.out.println(zoomScale);
+			System.out.println("zoomed out " + zoomScale);
+		}
+		if (surface.key == KeyEvent.VK_X) {// too unzoooom
+			zoomScale *= 2;
+			System.out.println("zoomed in " + zoomScale);
 		}
 		if (!keysDown.contains(surface.keyCode))
 			keysDown.add(surface.keyCode);
