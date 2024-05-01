@@ -103,6 +103,7 @@ public class ClassSelectionScreen extends Screen {
 
 		if (selectButton.contains(p) && surface.selectedClass != -1) {
 			surface.switchScreen(ScreenSwitcher.GAME_SCREEN);
+			surface.player.stop();
 			return;
 		}
 

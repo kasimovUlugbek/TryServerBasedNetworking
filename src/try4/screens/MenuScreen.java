@@ -5,6 +5,7 @@ import processing.core.PImage;
 import java.awt.Point;
 import java.awt.Rectangle;
 import try4.DrawingSurface;
+import try4.MP3Player;
 
 public class MenuScreen extends Screen {
 
@@ -13,7 +14,7 @@ public class MenuScreen extends Screen {
 
 	private Rectangle playButton;
 	private Rectangle instrButton;
-
+	
 	public MenuScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
@@ -26,6 +27,8 @@ public class MenuScreen extends Screen {
 	
 	public void setup() {
 		titleImage = surface.loadImage("resources\\c581177a2a4988860651d8161539b322.png");
+		//MP3Player.play("resources\\newmutation.mp3");
+		surface.player.play("resources\\newmutation.mp3");
 	}
 
 	public void draw() {

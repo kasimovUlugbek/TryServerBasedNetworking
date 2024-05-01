@@ -28,6 +28,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
 	public static PImage escSign_img;
 	public int selectedClass = -1;
+	
+	public MP3Player player = new MP3Player();
 
 	public DrawingSurface() {
 		screens = new ArrayList<Screen>();
