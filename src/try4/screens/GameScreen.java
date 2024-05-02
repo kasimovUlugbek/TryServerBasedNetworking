@@ -1,6 +1,5 @@
 package try4.screens;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -10,7 +9,6 @@ import networking.frontend.NetworkDataObject;
 import networking.frontend.NetworkListener;
 import networking.frontend.NetworkMessenger;
 import processing.core.PApplet;
-import processing.core.PImage;
 import try4.Player;
 import try4.PlayerData;
 import try4.worldGen.WorldGen;

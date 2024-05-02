@@ -76,7 +76,11 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 		String username = "";
 		do {
-			username = JOptionPane.showInputDialog("Give yourself a username:").trim();
+			try {
+				username = JOptionPane.showInputDialog("Give yourself a username:").trim();
+			} catch (Exception e) {
+				//forces you to type a username. can't click on the x
+			}
 		} while (username.length() <= 2);
 
 		((GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN)).setUsername(username);

@@ -23,64 +23,63 @@ public class WorldGen {
 	// fill in the possible new missing spots
 	// deletes all the chunks that were not confirmed
 	// draw
-	boolean foundTheChunk;
+	int keepingChunks;
+	int removed;
+
 	public void draw(double playerPosX, double playerPosY) {
-		boolean[] checkedChunks = new boolean[chunks.size()];
 		int signX = (int) (playerPosX / Math.abs(playerPosX));// negative or positive
 		int signY = (int) (playerPosY / Math.abs(playerPosY));
 		int playerChunkX = (int) (playerPosX / (Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK) + 0.5 * signX);
 		int playerChunkY = (int) (playerPosY / (Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK) + 0.5 * signY);
 
-		int keepingChunks = 0;
+		keepingChunks = 0;
+		boolean[] checkedChunks = new boolean[chunks.size()];
 		for (int i = 0; i < chunks.size(); i++) {// checking and confirming chunks that should stay
-//			if ((areInRange(chunks.get(i).positionX, playerPosX + renderRadius, renderChunkRadius)
-//					|| areInRange(chunks.get(i).positionX, playerPosX - renderRadius, renderChunkRadius))
-//					&& (areInRange(chunks.get(i).positionY, playerPosY + renderRadius, renderChunkRadius)
-//							|| areInRange(chunks.get(i).positionY, playerPosY - renderRadius, renderChunkRadius))) {
-			if (chunks.get(i).positionX <= playerPosX + renderRadius && chunks.get(i).positionY <= playerPosY + renderRadius) {
-				keepingChunks++;
+			if ((chunks.get(i).positionX <= playerPosX + renderRadius && chunks.get(i).positionX >= playerPosX - renderRadius)
+					&& (chunks.get(i).positionY <= playerPosY + renderRadius && chunks.get(i).positionY >= playerPosY - renderRadius)) {
 				checkedChunks[i] = true;
+				keepingChunks++;
 			}
 		}
 		System.out.println("keeping " + keepingChunks + " chunks");
 
-		foundTheChunk = false;
-		for (int j = playerChunkX + -renderChunkRadius; j < playerChunkX + renderChunkRadius; j++) {
-			for (int k = playerChunkY + -renderChunkRadius; k < playerChunkY + renderChunkRadius; k++) {
-				for (int i = 0; i < chunks.size(); i++) {
-					if (chunks.get(i).positionX == k * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK && chunks.get(i).positionY == j * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK) {
-						foundTheChunk = true;
+		for (int j = playerChunkX - renderChunkRadius; j < playerChunkX + renderChunkRadius; j++) {
+			for (int k = playerChunkY - renderChunkRadius; k < playerChunkY + renderChunkRadius; k++) {
+				for (Chunk chunk : chunks) {
+					if (!isNear(chunk.positionX, (k) * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK) || !isNear(chunk.positionY, (j) * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK)) {
+						chunks.add(new Chunk(surface, (int) ((k) * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK), (int) ((j) * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK)));
+						System.out.println("creating a chunk");
+						break;
 					}
 				}
-				if (!foundTheChunk) {
-					// create a new chunk in this location
-					chunks.add(new Chunk(surface, (int) (k * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK), (int) (j * Chunk.TILE_SIZE * Chunk.TILE_PER_CHUNK)));
-					System.out.println("creating a chunk");
-				}
-				foundTheChunk = false;
 			}
 		}
 
-		
 		// remove chunks that were not confirmed
 		for (int i = 0; i < checkedChunks.length; i++) {
-			if (!checkedChunks[i]) {
+			if (checkedChunks[i] == false) {
 				chunksToDestroy.add(i);
 			}
 		}
 
-		int removed = 0;
+		removed = 0;
 		for (int chunkInt : chunksToDestroy) {
 			chunks.remove(chunkInt - removed);
 			removed++;
 		}
+		chunksToDestroy.clear();
 
 		for (Chunk chunk : chunks) {
 			chunk.draw(surface);
 		}
 	}
 
-	private boolean areInRange(double a, double b, double range) {
-		return Math.abs(a - b) <= range;
+//	private boolean areInRange(double a, double b, double range) {
+//		return Math.abs(a - b) <= range;
+//	}
+	double nearEnough = 0.001;
+
+	private boolean isNear(double a, double b) {
+		return Math.abs(a - b) < nearEnough;
 	}
 }
