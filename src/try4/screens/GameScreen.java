@@ -13,6 +13,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import try4.Player;
 import try4.PlayerData;
+import try4.worldGen.WorldGen;
 
 public class GameScreen extends Screen implements NetworkListener {
 
@@ -21,6 +22,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	private ArrayList<Player> players;
 	private ArrayList<Integer> keysDown;
 	private DrawingSurface surface;
+	private WorldGen worldGen;
 
 	private String username;
 
@@ -38,8 +40,8 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void setup() {
-//		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
 		zoomScale = 0.5f;
+		worldGen = new WorldGen(surface, 69420);
 	}
 
 	@Override
@@ -64,35 +66,38 @@ public class GameScreen extends Screen implements NetworkListener {
 		float actualHeight = DRAWING_HEIGHT / zoomScale;
 		surface.scale(zoomScale);
 		surface.translate((float) (-me.getX() + actualWidth * 0.5), (float) (-me.getY() + actualHeight * 0.5));
-
+		
+		worldGen.draw(me.getX(), me.getY());
+		
 		float screenleftX = (float) (me.getX() - actualWidth * 0.5);
 		float screenrightX = (float) (me.getX() + actualWidth * 0.5);
 		float screentopY = (float) (me.getY() - actualHeight * 0.5);
 		float screenbottomY = (float) (me.getY() + actualHeight * 0.5);
-
+		
 		for (int i = 0; i < players.size(); i++) {
-			players.get(i).draw(surface);//draw other players
+			players.get(i).draw(surface);// draw other players
 
-			surface.push();//draw arrow pointing at player if they are off screen
+			surface.push();// draw arrow pointing at player if they are off screen
 
 			if (players.get(i).getX() < screenleftX || players.get(i).getX() > screenrightX
 					|| players.get(i).getY() < screentopY || players.get(i).getY() > screenbottomY) {
-				
-				
-				float clampedX = (float) Math.max(screenleftX+50, Math.min(screenrightX-50, players.get(i).getX()));
-				float clampedY = (float) Math.max(screentopY+50, Math.min(screenbottomY-50, players.get(i).getY()));
-				
-				double angle = Math.atan2(players.get(i).getY() - clampedY, players.get(i).getX() - clampedX)+PApplet.radians(90);
+
+				float clampedX = (float) Math.max(screenleftX + 50, Math.min(screenrightX - 50, players.get(i).getX()));
+				float clampedY = (float) Math.max(screentopY + 50, Math.min(screenbottomY - 50, players.get(i).getY()));
+
+				double angle = Math.atan2(players.get(i).getY() - clampedY, players.get(i).getX() - clampedX)
+						+ PApplet.radians(90);
 
 				surface.translate(clampedX, clampedY);
-				surface.rotate((float)angle);
-				surface.image(DrawingSurface.playerArrowPointer, -50, -50, 100, 100);
+				surface.rotate((float) angle);
+				surface.image(DrawingSurface.playerArrowPointer_img, -50, -50, 100, 100);
 			}
 			surface.pop();
 		}
 		me.draw(surface);
 
-		surface.image(DrawingSurface.unchosenClass_img, 10, 10);
+		surface.image(DrawingSurface.unchosenClass_img, 10, 10);// point of reference. to see the movement
+		// make an enviroment.
 		surface.pop();
 
 		if (keysDown.contains(KeyEvent.VK_W))
@@ -105,7 +110,6 @@ public class GameScreen extends Screen implements NetworkListener {
 			me.move(5, 0);
 		if (keysDown.contains(KeyEvent.VK_R))
 			me.SwitchClassType();
-		
 
 		if (nm != null && me.isDataChanged()) {
 
@@ -119,7 +123,7 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void keyPressed() {
-		//debugging keys
+		// debugging keys
 		if (surface.key == KeyEvent.VK_Z) {// too zoooom
 			zoomScale *= 0.5;
 			System.out.println("zoomed out " + zoomScale);

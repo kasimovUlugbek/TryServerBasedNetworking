@@ -28,7 +28,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 	private NetworkManagementPanel nmp;
 
 	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
-	public static PImage escSign_img, playerArrowPointer;
+	public static PImage escSign_img, playerArrowPointer_img;
+	public static PImage dirtTile_img,grassTile_img;
 	public int selectedClass = -1;
 
 	public MP3Player player = new MP3Player();
@@ -69,7 +70,9 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		healerClass_img = loadImage("img/healer.png");
 		unchosenClass_img = loadImage("img/unchosen.png");
 		escSign_img = loadImage("img/ESCsign.png");
-		playerArrowPointer = loadImage("img/playerArrowPointer.png");
+		playerArrowPointer_img = loadImage("img/playerArrowPointer.png");
+		dirtTile_img = loadImage("img/dirtTile.png");
+		grassTile_img = loadImage("img/grassTile.png");
 
 		String username = "";
 		do {
@@ -135,7 +138,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		activeScreen.onSwitchedTo();
 	}
 
-	public void StartnetowkringThing() {
+	public void startNetworkingWindow() {
 		if (nmp == null)
 			nmp = new NetworkManagementPanel("ProcessingAction", 6,
 					(GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN));
