@@ -23,6 +23,8 @@ public class GameScreen extends Screen implements NetworkListener {
 	private WorldGen worldGen;
 
 	private String username;
+	
+	private float baseTextSize = 50;
 
 	private NetworkMessenger nm;
 
@@ -74,6 +76,12 @@ public class GameScreen extends Screen implements NetworkListener {
 		
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);// draw other players
+			
+			surface.fill(0);
+			surface.textSize(baseTextSize / zoomScale);
+			surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);
+			surface.text(players.get(i).getUsername(), (float)players.get(i).getX(), (float) (players.get(i).getY() - players.get(i).getHeight() * 0.5 - 5));
+
 
 			surface.push();// draw arrow pointing at player if they are off screen
 

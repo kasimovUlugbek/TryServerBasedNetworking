@@ -86,10 +86,7 @@ public class Player {
 //		surface.fill(Color.red.getRGB());// origin
 //		surface.circle((float) x, (float) y, 5f);
 
-		surface.fill(0);
-		surface.textSize(14);
-		surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);
-		surface.text(username, (float) x, (float) (y - height * 0.5 - 5));
+		
 	}
 
 	public void SwitchClassType() {
@@ -114,6 +111,10 @@ public class Player {
 		this.x = data.x;
 		this.y = data.y;
 		this.classType = data.classType;
+	}
+	
+	public double getHeight() {
+		return height;
 	}
 
 }
