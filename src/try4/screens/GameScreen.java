@@ -22,31 +22,39 @@ public class GameScreen extends Screen implements NetworkListener {
 	private DrawingSurface surface;
 	private WorldGen worldGen;
 
+	public int randomSeed;
+
 	private String username;
-	
+
 	private float baseTextSize = 25;
 
 	private NetworkMessenger nm;
 
+	private static final String messageTypePlayerJoined = "PLAYER_JOINED";
 	private static final String messageTypeInit = "CREATE_PLAYER";
 	private static final String messageTypePlayerUpdate = "PLAYER_UPDATE";
+	private static final String messageTypeSeedSend = "SEED_SEND";
 
 	public GameScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
 		keysDown = new ArrayList<Integer>();
 		players = new ArrayList<Player>();
+		randomSeed = (int) (69420 * Math.random());
 	}
 
 	@Override
 	public void setup() {
 		zoomScale = 0.5f;
-		worldGen = new WorldGen(surface, 69420);
+
+		worldGen = new WorldGen(surface, randomSeed);
+
 	}
 
 	@Override
 	public void onSwitchedTo() {
 		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
+		nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerJoined, false);
 	}
 
 	public void setUsername(String username) {
@@ -66,33 +74,31 @@ public class GameScreen extends Screen implements NetworkListener {
 		float actualHeight = DRAWING_HEIGHT / zoomScale;
 		surface.scale(zoomScale);
 		surface.translate((float) (-me.getX() + actualWidth * 0.5), (float) (-me.getY() + actualHeight * 0.5));
-		
+
 		worldGen.draw(me.getX(), me.getY());
-		
+
 		float screenleftX = (float) (me.getX() - actualWidth * 0.5);
 		float screenrightX = (float) (me.getX() + actualWidth * 0.5);
 		float screentopY = (float) (me.getY() - actualHeight * 0.5);
 		float screenbottomY = (float) (me.getY() + actualHeight * 0.5);
-		
+
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);// draw other players
-			
+
 			surface.fill(0);
 			surface.textSize(baseTextSize / zoomScale);
 			surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);
-			surface.text(players.get(i).getUsername(), (float)players.get(i).getX(), (float) (players.get(i).getY() - players.get(i).getHeight() * 0.5 - 5));
-
+			surface.text(players.get(i).getUsername(), (float) players.get(i).getX(), (float) (players.get(i).getY() - players.get(i).getHeight() * 0.5 - 5));
 
 			surface.push();// draw arrow pointing at player if they are off screen
 
-			if (players.get(i).getX() < screenleftX || players.get(i).getX() > screenrightX
-					|| players.get(i).getY() < screentopY || players.get(i).getY() > screenbottomY) {
+			if (players.get(i).getX() < screenleftX || players.get(i).getX() > screenrightX || players.get(i).getY() < screentopY
+					|| players.get(i).getY() > screenbottomY) {
 
 				float clampedX = (float) Math.max(screenleftX + 50, Math.min(screenrightX - 50, players.get(i).getX()));
 				float clampedY = (float) Math.max(screentopY + 50, Math.min(screenbottomY - 50, players.get(i).getY()));
 
-				double angle = Math.atan2(players.get(i).getY() - clampedY, players.get(i).getX() - clampedX)
-						+ PApplet.radians(90);
+				double angle = Math.atan2(players.get(i).getY() - clampedY, players.get(i).getX() - clampedX) + PApplet.radians(90);
 
 				surface.translate(clampedX, clampedY);
 				surface.rotate((float) angle);
@@ -160,7 +166,6 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	@Override
 	public void networkMessageReceived(NetworkDataObject ndo) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -192,12 +197,27 @@ public class GameScreen extends Screen implements NetworkListener {
 						if (p.idMatch(host))
 							return;
 					}
-
+//
 					Player p = new Player(host, (PlayerData) ndo.message[1]);
 					players.add(p);
 
+				} else if (ndo.message[0].equals(messageTypeSeedSend)) {
+
+					System.out.print("my seed was: " + randomSeed);
+					randomSeed = (int) ndo.message[1];
+					System.out.println("now it's: " + randomSeed);
+
+				} else if (ndo.message[0].equals(messageTypePlayerJoined)) {
+
+					if (me.idMatch(host)) {// i am host
+						System.out.println("I am host, and someone joined");
+						nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeSeedSend, randomSeed);
+					} else
+						System.out.println("I am not host, and someone joined");
+
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
+
 				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeInit, me.getDataObject());
 
 			} else if (ndo.messageType.equals(NetworkDataObject.DISCONNECT)) {
