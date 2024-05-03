@@ -7,9 +7,9 @@ import try4.DrawingSurface;
 public class Chunk {
 
 	public int positionX, positionY;// position of top left corner
-	public static final int TILE_PER_CHUNK = 8;
+	public static final int TILE_PER_CHUNK = 16;
 	public static final int TILE_SIZE = 40;
-	private float noiseScale = 0.1f;
+	private float noiseScale = 0.005f;
 	private int[][] tiles;// I feel like using shorts will not make much difference
 
 	public Chunk(PApplet surface, int positionX, int positionY) {
@@ -20,7 +20,7 @@ public class Chunk {
 
 		for (int j = 0; j < tiles.length; j++) {
 			for (int k = 0; k < tiles[j].length; k++) {
-				tiles[j][k] = (int) (surface.noise((positionX + k * TILE_SIZE) * noiseScale, (positionY + j * TILE_SIZE) * noiseScale) * 100);
+				tiles[j][k] = (int) (surface.noise((positionX + k * TILE_SIZE + 20000) * noiseScale, (positionY + j * TILE_SIZE + 20000) * noiseScale) * 100);
 			}
 		}
 	}
@@ -31,8 +31,12 @@ public class Chunk {
 		for (int j = 0; j < tiles.length; j++) {
 			for (int k = 0; k < tiles.length; k++) {
 				val = tiles[j][k];
-				if (60 > val) {
+				if (val > 60) {
 					chosenImg = DrawingSurface.dirtTile_img;
+				} else if (val > 50) {
+					chosenImg = DrawingSurface.dirtyGrassTile_img;
+				} else if (val > 40) {
+					chosenImg = DrawingSurface.lightGrassTile_img;
 				} else {
 					chosenImg = DrawingSurface.grassTile_img;
 				}

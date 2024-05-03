@@ -29,7 +29,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
 	public static PImage escSign_img, playerArrowPointer_img;
-	public static PImage dirtTile_img,grassTile_img;
+	public static PImage dirtTile_img,grassTile_img, dirtyGrassTile_img, lightGrassTile_img;
 	public int selectedClass = -1;
 
 	public MP3Player player = new MP3Player();
@@ -73,6 +73,8 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 		playerArrowPointer_img = loadImage("img/playerArrowPointer.png");
 		dirtTile_img = loadImage("img/dirtTile.png");
 		grassTile_img = loadImage("img/grassTile.png");
+		dirtyGrassTile_img = loadImage("img/dirtyGrass.png");
+		lightGrassTile_img = loadImage("img/lighterGrass.png");
 
 		String username = "";
 		do {
