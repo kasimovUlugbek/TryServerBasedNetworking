@@ -43,15 +43,15 @@ public class WorldGen {
 				keepingChunks++;
 			}
 		}
-		System.out.println("keeping " + keepingChunks + " chunks");
+		if (keepingChunks > 0)
+			System.out.println("keeping " + keepingChunks + " chunks");
 
-		foundChunk = false;
 		for (int j = playerChunkY - renderChunkRadius; j < playerChunkY + renderChunkRadius; j++) {
 			for (int k = playerChunkX - renderChunkRadius; k < playerChunkX + renderChunkRadius; k++) {
 				for (Chunk chunk : chunks) {
 					if ((chunk.positionX == (k) * chunkWidth) && (chunk.positionY == (j) * chunkWidth)) {
 						foundChunk = true;
-//						System.out.println("found the tile " + k + " " + j);
+						System.out.println("found " + k + " " + j);
 						break;
 					}
 				}
@@ -59,6 +59,7 @@ public class WorldGen {
 					chunks.add(new Chunk(surface, (k) * chunkWidth, (j) * chunkWidth));
 					System.out.println("creating a chunk");
 				}
+				foundChunk = false;
 			}
 		}
 
