@@ -1,8 +1,5 @@
 package try4;
 
-
-import java.awt.Color;
-
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -86,8 +83,8 @@ public class Player {
 
 //		surface.noFill();
 //		surface.rect((float) x, (float) y, (float) width, (float) height);
-		surface.fill(Color.red.getRGB());// origin
-		surface.circle((float) x, (float) y, 5f);
+//		surface.fill(Color.red.getRGB());// origin
+//		surface.circle((float) x, (float) y, 5f);
 
 		surface.fill(0);
 		surface.textSize(14);

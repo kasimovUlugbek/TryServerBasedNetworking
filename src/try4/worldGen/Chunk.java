@@ -8,7 +8,8 @@ public class Chunk {
 
 	public int positionX, positionY;// position of top left corner
 	public static final int TILE_PER_CHUNK = 8;
-	public static final float TILE_SIZE = 20;
+	public static final int TILE_SIZE = 40;
+	private float noiseScale = 0.1f;
 	private int[][] tiles;// I feel like using shorts will not make much difference
 
 	public Chunk(PApplet surface, int positionX, int positionY) {
@@ -18,8 +19,8 @@ public class Chunk {
 		tiles = new int[TILE_PER_CHUNK][TILE_PER_CHUNK];
 
 		for (int j = 0; j < tiles.length; j++) {
-			for (int i = 0; i < tiles[j].length; i++) {
-				tiles[j][i] = (int) (surface.noise(i * 0.1f, j * 0.1f) * 100);
+			for (int k = 0; k < tiles[j].length; k++) {
+				tiles[j][k] = (int) (surface.noise((positionX + k * TILE_SIZE) * noiseScale, (positionY + j * TILE_SIZE) * noiseScale) * 100);
 			}
 		}
 	}
