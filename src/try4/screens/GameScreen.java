@@ -24,7 +24,7 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	private String username;
 	
-	private float baseTextSize = 50;
+	private float baseTextSize = 25;
 
 	private NetworkMessenger nm;
 
