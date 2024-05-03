@@ -1,5 +1,6 @@
 package try4.screens;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -54,7 +55,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	@Override
 	public void onSwitchedTo() {
 		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
-		nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerJoined, false);
+//		nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerJoined, false);
 	}
 
 	public void setUsername(String username) {
@@ -85,6 +86,7 @@ public class GameScreen extends Screen implements NetworkListener {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);// draw other players
 
+			// draw user-names
 			surface.fill(0);
 			surface.textSize(baseTextSize / zoomScale);
 			surface.textAlign(PApplet.CENTER, PApplet.BOTTOM);
@@ -100,9 +102,17 @@ public class GameScreen extends Screen implements NetworkListener {
 
 				double angle = Math.atan2(players.get(i).getY() - clampedY, players.get(i).getX() - clampedX) + PApplet.radians(90);
 
+				int dist = (int) (Math.sqrt(Math.pow(players.get(i).getX() - me.getX(), 2) + Math.pow(players.get(i).getY() - me.getX(), 2)) * 0.01);
 				surface.translate(clampedX, clampedY);
 				surface.rotate((float) angle);
 				surface.image(DrawingSurface.playerArrowPointer_img, -50, -50, 100, 100);
+
+				surface.translate(0, 70);
+				surface.rotate((float) -angle);
+				surface.fill(Color.white.getRGB());
+				surface.textSize(40);
+				surface.textAlign(PApplet.CENTER, PApplet.CENTER);
+				surface.text(dist + " m", 0, 0);// gonna call them meters
 			}
 			surface.pop();
 		}
