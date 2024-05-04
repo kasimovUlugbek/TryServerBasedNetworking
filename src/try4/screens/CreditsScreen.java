@@ -13,7 +13,7 @@ public class CreditsScreen extends Screen {
 	}
 
 	public void draw() {
-		surface.background(255);
+		surface.background(255, 115, 100);
 
 		surface.fill(0);
 		String str = "Bloodbath Brigade™, made by Evan Wescott.";

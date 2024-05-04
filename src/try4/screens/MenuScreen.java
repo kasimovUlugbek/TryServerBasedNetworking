@@ -31,12 +31,12 @@ public class MenuScreen extends Screen {
 
 	public void draw() {
 
-		surface.background(255, 255, 255);
+		surface.background(255, 115, 100);
 
 		surface.image(titleImage, DRAWING_WIDTH / 8, DRAWING_HEIGHT / 8, DRAWING_WIDTH * 3 / 4, DRAWING_HEIGHT / 8);
 
 		surface.push();
-		surface.rect(playButton.x, playButton.y, playButton.width, playButton.height, 10, 10, 10, 10);
+		surface.image(DrawingSurface.woodenSignBoard_img, playButton.x, playButton.y, playButton.width, playButton.height);
 		surface.fill(0);
 		String str = "Play";
 		float w = surface.textWidth(str);
@@ -44,7 +44,7 @@ public class MenuScreen extends Screen {
 		surface.pop();
 
 		surface.push();
-		surface.rect(instrButton.x, instrButton.y, instrButton.width, instrButton.height, 10, 10, 10, 10);
+		surface.image(DrawingSurface.woodenSignBoard_img, instrButton.x, instrButton.y, instrButton.width, instrButton.height);
 		surface.fill(0);
 		str = "Instructions";
 		w = surface.textWidth(str);
@@ -52,7 +52,7 @@ public class MenuScreen extends Screen {
 		surface.pop();
 
 		surface.push();
-		surface.rect(credButton.x, credButton.y, credButton.width, credButton.height, 10, 10, 10, 10);
+		surface.image(DrawingSurface.woodenSignBoard_img, credButton.x, credButton.y, credButton.width, credButton.height);
 		surface.fill(0);
 		str = "Credits";
 		w = surface.textWidth(str);

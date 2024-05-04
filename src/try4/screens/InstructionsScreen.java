@@ -13,7 +13,7 @@ public class InstructionsScreen extends Screen {
 	}
 
 	public void draw() {
-		surface.background(255, 255, 255);
+		surface.background(255, 115, 100);
 
 		surface.fill(0);
 		String str = "uh, yeah, play, one hosts, then the others connect to the ip";

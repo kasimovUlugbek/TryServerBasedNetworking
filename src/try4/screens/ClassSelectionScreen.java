@@ -50,24 +50,24 @@ public class ClassSelectionScreen extends Screen {
 
 	@Override
 	public void draw() {
-		surface.background(255, 255, 255);
+		surface.background(255, 115, 100);
 
 		surface.push();
 		surface.textSize(30);
 		surface.textAlign(PApplet.LEFT, PApplet.TOP);
 		surface.noStroke();
 
-		surface.fill(50, 50);
+		surface.fill(100, 100);
 		surface.rect(healerButton.x, healerButton.y, healerButton.width, healerButton.height, 10, 10, 10, 10);
 		surface.fill(0);
 		surface.text("Healer", healerButton.x + healerW * 0.5f, healerButton.y);
 
-		surface.fill(50, 50);
+		surface.fill(100, 100);
 		surface.rect(rangerButton.x, rangerButton.y, rangerButton.width, rangerButton.height, 10, 10, 10, 10);
 		surface.fill(0);
 		surface.text("Ranger", rangerButton.x + rangerW * 0.5f, rangerButton.y);
 
-		surface.fill(50, 50);
+		surface.fill(100, 100);
 		surface.rect(knightButton.x, knightButton.y, knightButton.width, knightButton.height, 10, 10, 10, 10);
 		surface.fill(0);
 		surface.text("Knight", knightButton.x + knightW * 0.5f, knightButton.y);
@@ -89,6 +89,10 @@ public class ClassSelectionScreen extends Screen {
 			tempClassImage = DrawingSurface.knightClass_img;
 			description = "Guy who protects";
 		}
+		surface.fill(80, 80);
+		surface.rect(portraitSquare.x-5, portraitSquare.y + portraitSquare.height-5, portraitSquare.width+10,
+				portraitSquare.height+10, 10, 10, 10, 10);
+		surface.fill(0);
 		surface.textSize(20);
 		surface.text(description, portraitSquare.x, portraitSquare.y + portraitSquare.height, portraitSquare.width,
 				portraitSquare.height);
