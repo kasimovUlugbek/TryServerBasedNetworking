@@ -12,7 +12,9 @@ public class MenuScreen extends Screen {
 	private DrawingSurface surface;
 	private PImage titleImage;
 
-	private Rectangle playButton, instrButton, credButton;
+	private Rectangle playButton, instrButton, credButton, musicToggleButton;
+
+	private int musicTimer = 0;// in milliseconds I think
 
 	public MenuScreen(DrawingSurface surface) {
 		super(800, 600);
@@ -22,15 +24,21 @@ public class MenuScreen extends Screen {
 		instrButton = new Rectangle(800 / 2 - 100, 600 / 2 - 10, 200, 75);
 		credButton = new Rectangle(800 / 2 - 100, 600 / 2 + 80, 200, 75);
 
+		musicToggleButton = new Rectangle(DRAWING_WIDTH - 50, DRAWING_HEIGHT / 8, 40, 40);
+
 	}
 
 	public void setup() {
-		titleImage = surface.loadImage("resources\\c581177a2a4988860651d8161539b322.png");
-		// surface.player.play("resources\\newmutation.mp3");
+		titleImage = surface.loadImage("resources\\c581177a2a4988860651d8161539b322.png");// replace this with a font
+
+		surface.player.play("resources\\\\newmutation.mp3");// uncomment when exporting/presenting project
 	}
 
 	public void draw() {
-
+		if (surface.player.isFinished()) {
+			musicTimer = 0;
+			surface.player.play("resources\\\\newmutation.mp3", musicTimer);
+		}
 		surface.background(255, 115, 100);
 
 		surface.image(titleImage, DRAWING_WIDTH / 8, DRAWING_HEIGHT / 8, DRAWING_WIDTH * 3 / 4, DRAWING_HEIGHT / 8);
@@ -59,6 +67,14 @@ public class MenuScreen extends Screen {
 		surface.text(str, credButton.x + credButton.width / 2 - w / 2, credButton.y + credButton.height / 2);
 		surface.pop();
 
+		surface.push();
+		PImage chosenImage = DrawingSurface.disabledMusicSign_img;
+		if (surface.player.isTurnedOn())
+			chosenImage = DrawingSurface.musicSign_img;
+
+		surface.image(chosenImage, musicToggleButton.x, musicToggleButton.y, musicToggleButton.width, musicToggleButton.height);
+		surface.pop();
+
 	}
 
 	public void mousePressed() {
@@ -79,6 +95,17 @@ public class MenuScreen extends Screen {
 			surface.switchScreen(ScreenSwitcher.CREDITS_SCREEN);
 			surface.player.stop();
 			// surface.player.play("resources\\HuntingDream.mp3");
+			return;
+		}
+
+		if (musicToggleButton.contains(p)) {
+			if (surface.player.isTurnedOn()) {
+				musicTimer = surface.player.getMusicProgress();
+				surface.player.stop();
+			} else {
+				System.out.println(musicTimer);
+				surface.player.play("resources\\\\newmutation.mp3", musicTimer);
+			}
 			return;
 		}
 	}
