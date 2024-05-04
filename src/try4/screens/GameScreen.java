@@ -56,6 +56,9 @@ public class GameScreen extends Screen implements NetworkListener {
 	public void onSwitchedTo() {
 		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
 //		nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerJoined, false);
+		
+		// will not let the player join or host if they are already in a world.
+//		surface.hideNetworkingWindow(); //uncoment this when exporting game.
 	}
 
 	public void setUsername(String username) {

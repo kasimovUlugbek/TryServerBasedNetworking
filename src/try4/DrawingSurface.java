@@ -29,7 +29,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	public static PImage knightClass_img, healerClass_img, rangedClass_img, unchosenClass_img;
 	public static PImage escSign_img, playerArrowPointer_img;
-	public static PImage dirtTile_img,grassTile_img, dirtyGrassTile_img, lightGrassTile_img;
+	public static PImage dirtTile_img, grassTile_img, dirtyGrassTile_img, lightGrassTile_img;
 	public static PImage woodenSignBoard_img;
 	public int selectedClass = -1;
 
@@ -83,7 +83,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 			try {
 				username = JOptionPane.showInputDialog("Give yourself a username:").trim();
 			} catch (Exception e) {
-				//forces you to type a username. can't click on the x
+				// forces you to type a user-name. can't click on the x
 			}
 		} while (username.length() <= 2);
 
@@ -148,8 +148,14 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	public void startNetworkingWindow() {
 		if (nmp == null)
-			nmp = new NetworkManagementPanel("ProcessingAction", 6,
-					(GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN));
+			nmp = new NetworkManagementPanel("ProcessingAction", 6, (GameScreen) screens.get(ScreenSwitcher.GAME_SCREEN));
+	}
+
+	public void hideNetworkingWindow() {
+		if (nmp == null)
+			return;
+		nmp.setVisible(false);
+		nmp = null;
 	}
 
 }
