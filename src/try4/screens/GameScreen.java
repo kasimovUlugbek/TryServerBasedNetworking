@@ -31,32 +31,30 @@ public class GameScreen extends Screen implements NetworkListener {
 
 	private NetworkMessenger nm;
 
-	private static final String messageTypePlayerJoined = "PLAYER_JOINED";
+//	private static final String messageTypePlayerJoined = "PLAYER_JOINED";
+//	private static final String messageTypeSeedSync = "SEED_SYNC";
 	private static final String messageTypeInit = "CREATE_PLAYER";
 	private static final String messageTypePlayerUpdate = "PLAYER_UPDATE";
-	private static final String messageTypeSeedSend = "SEED_SEND";
 
 	public GameScreen(DrawingSurface surface) {
 		super(800, 600);
 		this.surface = surface;
 		keysDown = new ArrayList<Integer>();
 		players = new ArrayList<Player>();
-		randomSeed = (int) (69420 * Math.random());
 	}
 
 	@Override
 	public void setup() {
 		zoomScale = 0.5f;
 
-		worldGen = new WorldGen(surface, randomSeed);
-
+		worldGen = new WorldGen(surface);
+//		worldGen.setSeed((int) (69420 * Math.random()));
 	}
 
 	@Override
 	public void onSwitchedTo() {
 		me = new Player("me!", username, surface.selectedClass, DRAWING_WIDTH / 2, DRAWING_HEIGHT / 2);
-//		nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerJoined, false);
-		
+
 		// will not let the player join or host if they are already in a world.
 //		surface.hideNetworkingWindow(); //uncoment this when exporting game.
 	}
@@ -175,6 +173,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	@Override
 	public void connectedToServer(NetworkMessenger nm) {
 		this.nm = nm;
+//		nm.sendMessage(NetworkDataObject.MESSAGE, messageTypePlayerJoined);
 	}
 
 	@Override
@@ -192,7 +191,7 @@ public class GameScreen extends Screen implements NetworkListener {
 		while (!queue.isEmpty()) {
 			NetworkDataObject ndo = queue.poll();
 
-			String host = ndo.getSourceIP();
+			String host = ndo.getSourceIP();// the person who originated the data-object
 
 			if (ndo.messageType.equals(NetworkDataObject.MESSAGE)) {
 				if (ndo.message[0].equals(messageTypePlayerUpdate)) {
@@ -204,38 +203,25 @@ public class GameScreen extends Screen implements NetworkListener {
 						}
 					}
 
-				} else if (ndo.message[0].equals(messageTypeInit)) {
+				} else if (ndo.message[0].equals(messageTypeInit)) {// message from client that tells that
 
 					for (Player p : players) {
-						if (p.idMatch(host))
+						if (p.idMatch(host))// don't run this code on the originator
 							return;
 					}
-//
+
 					Player p = new Player(host, (PlayerData) ndo.message[1]);
 					players.add(p);
 
-				} else if (ndo.message[0].equals(messageTypeSeedSend)) {
-
-					System.out.print("my seed was: " + randomSeed);
-					randomSeed = (int) ndo.message[1];
-					System.out.println("now it's: " + randomSeed);
-
-				} else if (ndo.message[0].equals(messageTypePlayerJoined)) {
-
-					if (me.idMatch(host)) {// i am host
-						System.out.println("I am host, and someone joined");
-						nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeSeedSend, randomSeed);
-					} else
-						System.out.println("I am not host, and someone joined");
-
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
+				// server tells the clients to all share their info
 
 				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeInit, me.getDataObject());
 
 			} else if (ndo.messageType.equals(NetworkDataObject.DISCONNECT)) {
 
-				if (ndo.dataSource.equals(ndo.serverHost)) {
+				if (ndo.dataSource.equals(ndo.serverHost)) {// if it was sent by the server
 					players.clear();
 				} else {
 					for (int i = players.size() - 1; i >= 0; i--)
@@ -244,6 +230,37 @@ public class GameScreen extends Screen implements NetworkListener {
 				}
 
 			}
+//			else if (ndo.message[0].equals(messageTypeSeedSync)) {
+//
+//				for (Player p : players) {
+//					if (p.idMatch(host))// don't run this code on the originator
+//						return;
+//				}
+//
+//				randomSeed = (int) ndo.message[1];
+//				System.out.println("my new seed is: " + randomSeed);
+//
+//			} else if (ndo.message[0].equals(messageTypePlayerJoined)) {
+//
+//				System.out.print(" got message playerjoined ");
+//				
+//				for (Player p : players) {
+//					if (p.idMatch(host))// found the originator
+//						return;
+//				}
+//				
+//
+//				for (Player p : players) {
+//					if (p.idMatch(ndo.serverHost.toString())) {// is the server host
+//						System.out.println("I am host, and someone joined");
+//						nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeSeedSync, randomSeed);
+//						return;
+//					}
+//				}
+//
+//				System.out.println("I am not host, and someone joined");
+//
+//			}
 
 		}
 

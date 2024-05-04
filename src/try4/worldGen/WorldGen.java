@@ -10,10 +10,13 @@ public class WorldGen {
 	private ArrayList<Chunk> chunks;
 	private ArrayList<Integer> chunksToDestroy;
 
-	public WorldGen(PApplet surface, int seed) {
+	public WorldGen(PApplet surface) {
 		this.surface = surface;
 		chunks = new ArrayList<Chunk>();
 		chunksToDestroy = new ArrayList<Integer>();
+		surface.noiseSeed(69420);
+	}
+	public void setSeed(int seed) {
 		surface.noiseSeed(seed);
 	}
 
