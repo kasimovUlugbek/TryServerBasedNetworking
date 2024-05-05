@@ -8,25 +8,14 @@ public class MP3Player {
 
 	private Player player;
 
-	public void play(String filename) {
+	public void play(String filename, int skipInSeconds) {
 		new Thread(() -> {
 			try {
 				FileInputStream fis = new FileInputStream(filename);
 				player = new Player(fis);
+				int startTimeMillis = skipInSeconds*1000;
 				player.play();
-			} catch (Exception e) {
-				System.out.println("Skibidi had a problem playing file " + filename);
-				System.out.println();
-			}
-		}).start();
-	}
-
-	public void play(String filename, int time) {
-		new Thread(() -> {
-			try {
-				FileInputStream fis = new FileInputStream(filename);
-				player = new Player(fis);
-				player.play(time);
+				
 			} catch (Exception e) {
 				System.out.println("Skibidi had a problem playing file " + filename);
 				System.out.println();

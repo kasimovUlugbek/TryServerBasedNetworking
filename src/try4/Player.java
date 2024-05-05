@@ -1,5 +1,6 @@
 package try4;
 
+import libraryStuff.Rectangle;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -115,6 +116,11 @@ public class Player {
 	
 	public double getHeight() {
 		return height;
+	}
+
+	public Rectangle getHitBox() {
+		// TODO Auto-generated method stub
+		return new Rectangle(getX(), getY(), width, getHeight());
 	}
 
 }

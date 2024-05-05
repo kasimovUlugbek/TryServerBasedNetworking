@@ -31,7 +31,7 @@ public class MenuScreen extends Screen {
 	public void setup() {
 		titleImage = surface.loadImage("resources\\c581177a2a4988860651d8161539b322.png");// replace this with a font
 
-		surface.player.play("resources\\\\newmutation.mp3");// uncomment when exporting/presenting project
+		surface.player.play("resources\\\\newmutation.mp3", 0);// uncomment when exporting/presenting project
 	}
 
 	public void draw() {
@@ -93,8 +93,6 @@ public class MenuScreen extends Screen {
 
 		if (credButton.contains(p)) {
 			surface.switchScreen(ScreenSwitcher.CREDITS_SCREEN);
-			surface.player.stop();
-			// surface.player.play("resources\\HuntingDream.mp3");
 			return;
 		}
 

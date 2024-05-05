@@ -5,7 +5,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Queue;
 
+import try4.Bullet;
 import try4.DrawingSurface;
+import try4.Enemy;
 import networking.frontend.NetworkDataObject;
 import networking.frontend.NetworkListener;
 import networking.frontend.NetworkMessenger;
@@ -13,6 +15,7 @@ import processing.core.PApplet;
 import try4.Player;
 import try4.PlayerData;
 import try4.worldGen.WorldGen;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameScreen extends Screen implements NetworkListener {
 
@@ -20,10 +23,11 @@ public class GameScreen extends Screen implements NetworkListener {
 	private Player me;
 	private ArrayList<Player> players;
 	private ArrayList<Integer> keysDown;
+	private CopyOnWriteArrayList<Enemy> enemies;
 	private DrawingSurface surface;
 	private WorldGen worldGen;
 
-	public int randomSeed;
+	public int randomSeed, lastCalledFrame;
 
 	private String username;
 
@@ -41,6 +45,7 @@ public class GameScreen extends Screen implements NetworkListener {
 		this.surface = surface;
 		keysDown = new ArrayList<Integer>();
 		players = new ArrayList<Player>();
+		enemies = new CopyOnWriteArrayList<Enemy>();
 	}
 
 	@Override
@@ -84,6 +89,32 @@ public class GameScreen extends Screen implements NetworkListener {
 		float screentopY = (float) (me.getY() - actualHeight * 0.5);
 		float screenbottomY = (float) (me.getY() + actualHeight * 0.5);
 
+		for (Enemy e : enemies) {
+			e.draw(surface);
+			for (Player p : players) {
+				double dist = Math.sqrt(Math.pow(p.getX() - e.getX(), 2) + Math.pow(p.getY() - e.getY(), 2));
+				if (e.getclosestEnemy() != null && dist < Math.sqrt(Math.pow(e.getclosestEnemy().getX() - e.getX(), 2) + Math.pow(e.getclosestEnemy().getY() - e.getY(), 2))) {
+					e.setclosestEnemy(p);
+				} else if (e.getclosestEnemy() == null) {
+					e.setclosestEnemy(p);
+					//e.setChaseDirection((float)e.getclosestEnemy().getX(), (float)e.getclosestEnemy().getY(), 1f);
+				}
+			}
+			
+			e.chase();
+			
+			//e.createProjectiles(surface, (float)e.getclosestEnemy().getX(), (float)e.getclosestEnemy().getY());
+			for (Bullet b : e.getProjectiles()) {
+				b.draw(surface, true);
+			}
+		}
+		
+		for (int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).getProjectiles().removeIf(bullet -> {return (bullet.getHitBox().issTouching(players.get(0).getHitBox()));});
+		}
+		
+		enemies.removeIf(enemy -> {return enemy.dead();});
+		
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);// draw other players
 
@@ -141,6 +172,7 @@ public class GameScreen extends Screen implements NetworkListener {
 
 		}
 
+		spawnNewEnemy();
 		processNetworkMessages();
 	}
 
@@ -264,5 +296,13 @@ public class GameScreen extends Screen implements NetworkListener {
 
 		}
 
+	}
+	
+	public void spawnNewEnemy() {
+		if (surface.frameCount - lastCalledFrame >= surface.frameRate) {
+			Enemy e = new Enemy(100, "resources\\oryxSanctuaryChars16x16.png", 100, 0, 128, 16);
+			enemies.add(e);
+			lastCalledFrame = surface.frameCount - 5;
+		}
 	}
 }
