@@ -21,7 +21,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 	// Window stuff
 	public float ratioX, ratioY;
-	private static final int DRAWING_WIDTH = 800, DRAWING_HEIGHT = 600;
+	private static final int DRAWING_WIDTH = 1024, DRAWING_HEIGHT = 768;
 
 	private Screen activeScreen;
 	private ArrayList<Screen> screens;
@@ -93,6 +93,7 @@ public class DrawingSurface extends PApplet implements ScreenSwitcher {
 
 		for (Screen s : screens)
 			s.setup();
+		this.windowMove(255, 10);
 	}
 
 	public void draw() {
