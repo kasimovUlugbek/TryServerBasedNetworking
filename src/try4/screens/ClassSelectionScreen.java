@@ -81,10 +81,10 @@ public class ClassSelectionScreen extends Screen {
 		String description = "choose a class";
 		if (surface.selectedClass == 0) {
 			tempClassImage = DrawingSurface.healerClass_img;
-			description = "Guy who heals\nPASSIVE: kills self-heal a small amount\nM1: fire a damaging projectile toward the cursor\nQ: ";// can maybe get strings from reading text files. if we'l need to
+			description = "The healer may not be the most threatening in combat, but with their vampiristic abilities they are an important member of any successful team.\nPASSIVE: kills self-heal a small amount\nM1: fire a damaging projectile toward the cursor\nQ: create a zone around yourself for 5 seconds, healing teammates inside\nE: toss out an emergency health pack, healing teammates in an area around the cursor";// can maybe get strings from reading text files. if we'l need to
 		} else if (surface.selectedClass == 1) {
 			tempClassImage = DrawingSurface.rangedClass_img;
-			description = "Guy who exterminates\nM1: fire a volley of three damaging arrows toward the cursor\nQ: fire a large arrow that deals heavy damage and pierces enemies\nE: summon a storm of arrows in an area around the cursor, damaging enemies over time";
+			description = "The most nimble of the group, the ranger has an easier time weaving around projectiles while dishing out consistent damage.\nM1: fire a volley of three damaging arrows toward the cursor\nQ: fire a large arrow that deals heavy damage and pierces enemies\nE: summon a storm of arrows in an area around the cursor, damaging enemies over time";
 		} else if (surface.selectedClass == 2) {
 			tempClassImage = DrawingSurface.knightClass_img;
 			description = "Guy who protects\nPASSIVE: a shield points toward the cursor, blocking projectiles";
@@ -93,7 +93,7 @@ public class ClassSelectionScreen extends Screen {
 		surface.rect(portraitSquare.x-5, portraitSquare.y + portraitSquare.height-5, portraitSquare.width+10,
 				portraitSquare.height+10, 10, 10, 10, 10);
 		surface.fill(0);
-		surface.textSize(15);
+		surface.textSize(14);
 		surface.text(description, portraitSquare.x, portraitSquare.y + portraitSquare.height, portraitSquare.width,
 				portraitSquare.height);
 		surface.image(tempClassImage, portraitSquare.x, portraitSquare.y, portraitSquare.width, portraitSquare.height);
