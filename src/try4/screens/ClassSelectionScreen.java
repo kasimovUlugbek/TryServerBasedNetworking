@@ -81,10 +81,10 @@ public class ClassSelectionScreen extends Screen {
 		String description = "choose a class";
 		if (surface.selectedClass == 0) {
 			tempClassImage = DrawingSurface.healerClass_img;
-			description = "Guy who heals";// can maybe get strings from reading text files. if we'l need to
+			description = "Guy who heals\nPASSIVE: kills self-heal a small amount";// can maybe get strings from reading text files. if we'l need to
 		} else if (surface.selectedClass == 1) {
 			tempClassImage = DrawingSurface.rangedClass_img;
-			description = "Guy who exterminates";
+			description = "Guy who exterminates\nM1: fire a volley of three damaging arrows toward the cursor\nQ: fire a large arrow that deals heavy damage and pierces enemies\nE: summon a storm of arrows in an area around the cursor, damaging enemies over time";
 		} else if (surface.selectedClass == 2) {
 			tempClassImage = DrawingSurface.knightClass_img;
 			description = "Guy who protects";
@@ -93,7 +93,7 @@ public class ClassSelectionScreen extends Screen {
 		surface.rect(portraitSquare.x-5, portraitSquare.y + portraitSquare.height-5, portraitSquare.width+10,
 				portraitSquare.height+10, 10, 10, 10, 10);
 		surface.fill(0);
-		surface.textSize(20);
+		surface.textSize(17);
 		surface.text(description, portraitSquare.x, portraitSquare.y + portraitSquare.height, portraitSquare.width,
 				portraitSquare.height);
 		surface.image(tempClassImage, portraitSquare.x, portraitSquare.y, portraitSquare.width, portraitSquare.height);
