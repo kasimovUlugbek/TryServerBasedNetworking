@@ -28,6 +28,10 @@ public class WorldGen {
 	int removed;
 	boolean foundChunk;
 
+	public void reset() {
+		chunks.clear();
+	}
+
 	public void draw(double playerPosX, double playerPosY) {
 		int signX = (int) (playerPosX / Math.abs(playerPosX));// negative or positive
 		int signY = (int) (playerPosY / Math.abs(playerPosY));

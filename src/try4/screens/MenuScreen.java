@@ -98,10 +98,10 @@ public class MenuScreen extends Screen {
 
 		if (musicToggleButton.contains(p)) {
 			if (surface.player.isTurnedOn()) {
+				System.out.println(musicTimer);
 				musicTimer = surface.player.getMusicProgress();
 				surface.player.stop();
 			} else {
-				System.out.println(musicTimer);
 				surface.player.play("resources\\\\newmutation.mp3", musicTimer);
 			}
 			return;

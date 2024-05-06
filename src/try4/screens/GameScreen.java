@@ -36,7 +36,7 @@ public class GameScreen extends Screen implements NetworkListener {
 	private NetworkMessenger nm;
 
 //	private static final String messageTypePlayerJoined = "PLAYER_JOINED";
-//	private static final String messageTypeSeedSync = "SEED_SYNC";
+	private static final String messageTypeSeedSync = "SEED_SYNC";
 	private static final String messageTypeInit = "CREATE_PLAYER";
 	private static final String messageTypePlayerUpdate = "PLAYER_UPDATE";
 
@@ -53,7 +53,8 @@ public class GameScreen extends Screen implements NetworkListener {
 		zoomScale = 0.5f;
 
 		worldGen = new WorldGen(surface);
-//		worldGen.setSeed((int) (69420 * Math.random()));
+		randomSeed = (int) (69420 * Math.random());
+//		worldGen.setSeed(randomSeed);
 	}
 
 	@Override
@@ -93,28 +94,35 @@ public class GameScreen extends Screen implements NetworkListener {
 			e.draw(surface);
 			for (Player p : players) {
 				double dist = Math.sqrt(Math.pow(p.getX() - e.getX(), 2) + Math.pow(p.getY() - e.getY(), 2));
-				if (e.getclosestEnemy() != null && dist < Math.sqrt(Math.pow(e.getclosestEnemy().getX() - e.getX(), 2) + Math.pow(e.getclosestEnemy().getY() - e.getY(), 2))) {
+				if (e.getclosestEnemy() != null
+						&& dist < Math.sqrt(Math.pow(e.getclosestEnemy().getX() - e.getX(), 2) + Math.pow(e.getclosestEnemy().getY() - e.getY(), 2))) {
 					e.setclosestEnemy(p);
 				} else if (e.getclosestEnemy() == null) {
 					e.setclosestEnemy(p);
-					//e.setChaseDirection((float)e.getclosestEnemy().getX(), (float)e.getclosestEnemy().getY(), 1f);
+					// e.setChaseDirection((float)e.getclosestEnemy().getX(),
+					// (float)e.getclosestEnemy().getY(), 1f);
 				}
 			}
-			
+
 			e.chase();
-			
-			//e.createProjectiles(surface, (float)e.getclosestEnemy().getX(), (float)e.getclosestEnemy().getY());
+
+			// e.createProjectiles(surface, (float)e.getclosestEnemy().getX(),
+			// (float)e.getclosestEnemy().getY());
 			for (Bullet b : e.getProjectiles()) {
 				b.draw(surface, true);
 			}
 		}
-		
+
 		for (int i = 0; i < enemies.size(); i++) {
-			enemies.get(i).getProjectiles().removeIf(bullet -> {return (bullet.getHitBox().issTouching(players.get(0).getHitBox()));});
+			enemies.get(i).getProjectiles().removeIf(bullet -> {
+				return (bullet.getHitBox().issTouching(players.get(0).getHitBox()));
+			});
 		}
-		
-		enemies.removeIf(enemy -> {return enemy.dead();});
-		
+
+		enemies.removeIf(enemy -> {
+			return enemy.dead();
+		});
+
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).draw(surface);// draw other players
 
@@ -245,10 +253,20 @@ public class GameScreen extends Screen implements NetworkListener {
 					Player p = new Player(host, (PlayerData) ndo.message[1]);
 					players.add(p);
 
+				} else if (ndo.message[0].equals(messageTypeSeedSync)) {// message from client that tells that
+					System.out.println("got seedSync message: " + (int) ndo.message[1]);
+					if (!ndo.dataSource.equals(ndo.serverHost))
+						return;
+
+					System.out.println("syncing seed: " + (int) ndo.message[1]);
+					randomSeed = (int) ndo.message[1];
+					worldGen.setSeed(randomSeed);
+					worldGen.reset();
+
 				}
 			} else if (ndo.messageType.equals(NetworkDataObject.CLIENT_LIST)) {
 				// server tells the clients to all share their info
-
+				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeSeedSync, randomSeed);
 				nm.sendMessage(NetworkDataObject.MESSAGE, messageTypeInit, me.getDataObject());
 
 			} else if (ndo.messageType.equals(NetworkDataObject.DISCONNECT)) {
@@ -297,7 +315,7 @@ public class GameScreen extends Screen implements NetworkListener {
 		}
 
 	}
-	
+
 	public void spawnNewEnemy() {
 		if (surface.frameCount - lastCalledFrame >= surface.frameRate) {
 			Enemy e = new Enemy(100, "resources\\oryxSanctuaryChars16x16.png", 100, 0, 128, 16);
